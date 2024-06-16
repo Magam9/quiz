@@ -1,0 +1,21 @@
+<div class="app">
+  <div class="app__button">
+    <button (click)="addTopic()">
+      Add topic
+    </button>
+    <button class="app__button-clean" (click)="cleanAll()">
+      Clean all
+    </button>
+  </div>
+  <div class="app__input">
+    <input *ngIf="isInputDisplay" type="text" placeholder="Topic" [formControl]="topic">
+    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveTopic()">Save</button>
+  </div>
+  <div class="app__topics">
+    <app-topic
+      *ngFor="let topic of data?.topics"
+      [data]="topic"
+      (saveData)="saveTopicData($event)"
+    ></app-topic>
+  </div>
+</div>

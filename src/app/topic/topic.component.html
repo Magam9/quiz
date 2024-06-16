@@ -1,0 +1,22 @@
+<div class="app-topic">
+  <div class="app-topic__header">
+    <div class="app-topic__header-title">
+      {{ data?.name }}
+    </div>
+    <button (click)="addQuestion()">
+      Add question
+    </button>
+  </div>
+  <div class="app-topic__inputs">
+    <input *ngIf="isInputDisplay" type="text" placeholder="Question" [formControl]="question">
+    <input *ngIf="isInputDisplay" type="text" placeholder="Answer" [formControl]="answer">
+    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveQuestion()">Save</button>
+  </div>
+  <div *ngIf="areQuestionsDisplayed" class="app-topic__questions">
+    <app-question
+      *ngFor="let question of data?.questions"
+      [data]="question"
+      (saveData)="saveQuestionData($event)"
+    ></app-question>
+  </div>
+</div>

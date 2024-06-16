@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  color: #1a1a1a;
+}
+
+button {
+  padding: 10px 15px;
+  box-shadow: 1px;
+  border: none;
+  border-radius: 10px;
+  background-color: #55c2da;
+  box-shadow: 0px 5px 5px -7px rgba(0,0,0,0.75);
+  color: #4a4a4a;
+  max-height: 35px;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+  }
+}
+
+.app-button__save {
+  background-color: #22986d;
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid #4a4a4a;
+  outline: none;
+  font-size: 18px;
+  padding: 10px 15px;
+  color: #4a4a4a;
+  max-height: 35px;
+
+  &:focus {
+    border-bottom: 1px solid #3c3c3c;
+  }
+}

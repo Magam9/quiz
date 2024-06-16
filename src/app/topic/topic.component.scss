@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.app-topic {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #505050;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 5px 0;
+
+  &__header {
+    &-title {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.08px;
+
+      &::first-letter {
+        text-transform: capitalize;
+      }
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    input,
+    button {
+      display: block;
+    }
+  }
+
+  &__questions {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    margin: 5px 0;
+  }
+}

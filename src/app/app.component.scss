@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+
+  &__button {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+    gap: 5px;
+
+    button {
+      display: block;
+    }
+
+    &-clean {
+      background-color: #f05151;
+    }
+  }
+}

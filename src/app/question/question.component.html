@@ -1,0 +1,28 @@
+<div class="app-question">
+  <div class="app-question__header">
+    <div class="app-question__header-question">
+      Q: {{ data?.question }}
+    </div>
+    <div class="app-question__header-answer">
+      A: {{ data?.answer }}
+    </div>
+  </div>
+  <button (click)="addSubQuestion()">
+    Add sub question
+  </button>
+  <div class="app-question__inputs">
+    <input *ngIf="isInputDisplay" type="text" placeholder="Question" [formControl]="question">
+    <input *ngIf="isInputDisplay" type="text" placeholder="Answer" [formControl]="answer">
+    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveSubQuestion()">Save</button>
+  </div>
+
+  <div
+    class="app-question__sub-questions"
+  >
+    <app-question
+      *ngFor="let question of data?.subQuestions"
+      [data]="question"
+      (saveData)="saveSubQuestionData($event)"
+    ></app-question>
+  </div>
+</div>

@@ -1,22 +1,40 @@
-<div class="app-topic">
-  <div class="app-topic__header">
-    <div class="app-topic__header-title">
-      {{ data?.name }}
-    </div>
-    <button (click)="addQuestion()">
-      Add question
+<mat-card class="topic-card">
+  <!-- Header: Topic Name + “Add Question” -->
+  <mat-card-header>
+    <mat-card-title class="topic-title">{{ data.name }}</mat-card-title>
+    <mat-card-actions align="end">
+      <button mat-button color="primary" class="add-question-btn" (click)="addQuestion()">
+        Add Question
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card-header>
+
+  <!-- If user clicked “Add Question”, show form -->
+  <mat-card-content *ngIf="isInputDisplay" class="question-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Question</mat-label>
+      <input matInput [formControl]="question" placeholder="Enter new question" />
+      <mat-error *ngIf="question.invalid">Question is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Answer</mat-label>
+      <input matInput [formControl]="answer" placeholder="Enter answer" />
+      <mat-error *ngIf="answer.invalid">Answer is required</mat-error>
+    </mat-form-field>
+
+    <button mat-flat-button color="accent" (click)="saveQuestion()" [disabled]="question.invalid || answer.invalid" class="save-question-btn">
+      Save Question
     </button>
-  </div>
-  <div class="app-topic__inputs">
-    <input *ngIf="isInputDisplay" type="text" placeholder="Question" [formControl]="question">
-    <input *ngIf="isInputDisplay" type="text" placeholder="Answer" [formControl]="answer">
-    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveQuestion()">Save</button>
-  </div>
-  <div *ngIf="areQuestionsDisplayed" class="app-topic__questions">
+  </mat-card-content>
+
+  <!-- List of Questions (each is a <app-question>) -->
+  <mat-card-content class="questions-list" *ngIf="data.questions?.length">
     <app-question
-      *ngFor="let question of data?.questions"
-      [data]="question"
-      (saveData)="saveQuestionData($event)"
-    ></app-question>
-  </div>
-</div>
+      *ngFor="let q of data.questions"
+      [data]="q"
+      (saveData)="saveQuestionData($event)">
+    </app-question>
+  </mat-card-content>
+</mat-card>

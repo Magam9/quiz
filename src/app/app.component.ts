@@ -1,8 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ITopic, TopicComponent } from './topic/topic.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { TopicComponent, ITopic } from './topic/topic.component';
 import { generateRandomId } from './helpers';
 
 export interface IQuiz {
@@ -12,30 +17,31 @@ export interface IQuiz {
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatExpansionModule,
+    TopicComponent,
+  ],
   templateUrl: 'app.component.html',
-  styleUrl: 'app.component.scss',
-  imports: [RouterOutlet, CommonModule, FormsModule, ReactiveFormsModule, TopicComponent],
+  styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   isInputDisplay = false;
-  topic: FormControl = new FormControl('', [
-    Validators.required, 
-    Validators.minLength(1)
-  ])
+  topic = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
-  data: IQuiz  = {
-    topics: [],
-  };
+  data: IQuiz = { topics: [] };
 
   ngOnInit(): void {
-    const data = localStorage.getItem('quiz');
-    if (data) {
-      this.data = JSON.parse(data); 
+    const saved = localStorage.getItem('quiz');
+    if (saved) {
+      this.data = JSON.parse(saved);
     }
-  }
-
-  ngOnDestroy(): void {
-    localStorage.removeItem('quiz');
   }
 
   addTopic() {
@@ -46,28 +52,26 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.topic.valid) {
       this.data.topics.push({
         id: generateRandomId('topic'),
-        name: this.topic.getRawValue(),
+        name: this.topic.value as string,
         questions: [],
       });
-      this.topic.setValue('');
+      this.topic.reset();
       this.isInputDisplay = false;
       localStorage.setItem('quiz', JSON.stringify(this.data));
     }
   }
 
-  saveTopicData(data: ITopic) {
-    this.data.topics.forEach(topic => {
-      if (topic.id === data.id) {
-        topic = data;
-      }
-    });
-    localStorage.setItem('quiz', JSON.stringify(this.data));
+  saveTopicData(updatedTopic: ITopic) {
+    const idx = this.data.topics.findIndex(t => t.id === updatedTopic.id);
+    if (idx > -1) {
+      this.data.topics[idx] = updatedTopic;
+      localStorage.setItem('quiz', JSON.stringify(this.data));
+    }
   }
 
   cleanAll() {
-    this.data = {
-      topics: [],
-    };
+    this.data = { topics: [] };
     localStorage.removeItem('quiz');
+    this.isInputDisplay = false;
   }
 }

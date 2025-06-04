@@ -1,21 +1,50 @@
-<div class="app">
-  <div class="app__button">
-    <button (click)="addTopic()">
-      Add topic
+<mat-toolbar color="primary" class="main-toolbar">
+  <span class="app-title">Quiz Builder</span>
+</mat-toolbar>
+
+<div class="app-container">
+
+  <!-- 1) Inline “New Topic” Form (only shown when isInputDisplay = true) -->
+  <div *ngIf="isInputDisplay" class="new-topic-wrapper">
+    <mat-form-field appearance="outline" class="new-topic-field">
+      <mat-label>New Topic</mat-label>
+      <input matInput [formControl]="topic" placeholder="Enter topic name" />
+      <mat-error *ngIf="topic.invalid">Topic is required</mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveTopic()"
+      [disabled]="topic.invalid"
+      class="save-topic-btn">
+      Save Topic
     </button>
-    <button class="app__button-clean" (click)="cleanAll()">
-      Clean all
+  </div>
+
+  <!-- 2) “Add Topic” & “Clear All” Actions -->
+  <div class="toolbar-actions">
+    <button mat-flat-button color="accent" (click)="addTopic()" class="add-topic-btn">
+      <mat-icon>add</mat-icon>
+      Add Topic
+    </button>
+    <button mat-stroked-button color="warn" (click)="cleanAll()">
+      <mat-icon>delete</mat-icon>
+      Clear All
     </button>
   </div>
-  <div class="app__input">
-    <input *ngIf="isInputDisplay" type="text" placeholder="Topic" [formControl]="topic">
-    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveTopic()">Save</button>
-  </div>
-  <div class="app__topics">
-    <app-topic
-      *ngFor="let topic of data?.topics"
-      [data]="topic"
-      (saveData)="saveTopicData($event)"
-    ></app-topic>
-  </div>
+
+  <!-- 3) Accordions for Each Topic -->
+  <mat-accordion class="topic-accordion">
+    <mat-expansion-panel *ngFor="let topic of data?.topics">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ topic.name }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <!-- Inside each expanded panel, we delegate to <app-topic> -->
+      <app-topic [data]="topic" (saveData)="saveTopicData($event)"></app-topic>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

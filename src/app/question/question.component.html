@@ -1,28 +1,54 @@
-<div class="app-question">
-  <div class="app-question__header">
-    <div class="app-question__header-question">
-      Q: {{ data?.question }}
+<mat-card class="question-card">
+  <!-- Q / A Display Row -->
+  <div class="qa-content">
+    <div class="qa-row">
+      <span class="label">Q:</span>
+      <span class="text">{{ data.question }}</span>
     </div>
-    <div class="app-question__header-answer">
-      A: {{ data?.answer }}
+    <div class="qa-row">
+      <span class="label">A:</span>
+      <span class="text">{{ data.answer }}</span>
     </div>
-  </div>
-  <button (click)="addSubQuestion()">
-    Add sub question
-  </button>
-  <div class="app-question__inputs">
-    <input *ngIf="isInputDisplay" type="text" placeholder="Question" [formControl]="question">
-    <input *ngIf="isInputDisplay" type="text" placeholder="Answer" [formControl]="answer">
-    <button class="app-button__save" *ngIf="isInputDisplay" (click)="saveSubQuestion()">Save</button>
   </div>
 
-  <div
-    class="app-question__sub-questions"
-  >
-    <app-question
-      *ngFor="let question of data?.subQuestions"
-      [data]="question"
-      (saveData)="saveSubQuestionData($event)"
-    ></app-question>
+  <!-- “Add Sub-question” Button -->
+  <mat-card-actions align="start" class="add-subaction">
+    <button mat-stroked-button color="primary" class="add-sub-btn" (click)="addSubQuestion()">
+      <mat-icon>add</mat-icon>
+      Add Sub-question
+    </button>
+  </mat-card-actions>
+
+  <!-- Sub-question Input Form (shown on demand) -->
+  <div *ngIf="isInputDisplay" class="sub-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Sub-question</mat-label>
+      <input matInput [formControl]="question" placeholder="Enter sub-question" />
+      <mat-error *ngIf="question.invalid">Required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Answer</mat-label>
+      <input matInput [formControl]="answer" placeholder="Enter answer" />
+      <mat-error *ngIf="answer.invalid">Required</mat-error>
+    </mat-form-field>
+
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="saveSubQuestion()"
+      [disabled]="question.invalid || answer.invalid"
+      class="save-sub-btn">
+      Save
+    </button>
   </div>
-</div>
+
+  <!-- Nested Sub-questions List -->
+  <div class="sub-questions" *ngIf="data.subQuestions.length">
+    <app-question
+      *ngFor="let sub of data.subQuestions"
+      [data]="sub"
+      (saveData)="saveSubQuestionData($event)">
+    </app-question>
+  </div>
+</mat-card>

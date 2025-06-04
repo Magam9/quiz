@@ -1,43 +1,75 @@
-:host {
-  display: block;
+/* Overall card styling: white background, subtle shadow */
+.question-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  margin-bottom: 12px;
+  padding: 16px;
 }
 
-.app-question {
+/* Q/A container */
+.qa-content {
   display: flex;
-  flex-direction: row;
-  padding: 5px;
-  margin: 5px 0;
-  border: 1px solid #4e4e4e;
-  border-radius: 8px;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
 
-  &:hover {
-    cursor: pointer;
-    transform: scaleZ(1.2);
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+/* Each Q or A line */
+.qa-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #212121; /* dark text for readability */
+
+  .label {
+    font-weight: 600;
+    color: #7b1fa2; /* violet accent */
   }
+}
 
-  &__header {
-    margin-right: 10px;
+/* “Add Sub-question” button row */
+.add-subaction {
+  margin-bottom: 12px;
+}
+
+/* Style for “Add Sub-question” button */
+.add-sub-btn {
+  color: #7b1fa2; /* violet accent text */
+  border-color: #7b1fa2;
+  text-transform: none;
+
+  mat-icon {
+    margin-right: 4px;
   }
+}
 
-  &__inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+/* Sub-question input form styling */
+.sub-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
 
-    input,
-    button {
-      display: block;
-    }
-  }
+.full-width {
+  width: 100%;
+}
 
-  &__sub-questions {
-    padding: 5px;
+/* “Save” button for sub-question */
+.save-sub-btn {
+  background-color: #7b1fa2; /* violet accent fill */
+  color: #ffffff;
+  text-transform: none;
+  align-self: flex-start;
+}
 
-    &__sub-questions {
-      display: flex;
-      flex-direction: column;
-      padding: 5px;
-    }
-  }
+/* Nested sub-questions container */
+.sub-questions {
+  margin-left: 16px;
+  border-left: 3px dashed #e1bee7; /* light violet accent */
+  padding-left: 12px;
+  margin-top: 16px;
 }

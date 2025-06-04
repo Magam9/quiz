@@ -1,8 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IQuestion, QuestionComponent } from '../question/question.component';
-import { Nullable } from '../types';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { QuestionComponent, IQuestion } from '../question/question.component';
 import { generateRandomId } from '../helpers';
 
 export interface ITopic {
@@ -14,29 +19,27 @@ export interface ITopic {
 @Component({
   selector: 'app-topic',
   standalone: true,
-  imports: [QuestionComponent, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    QuestionComponent,
+    MatDividerModule,
+  ],
   templateUrl: './topic.component.html',
-  styleUrl: './topic.component.scss',
+  styleUrls: ['./topic.component.scss'],
 })
 export class TopicComponent {
-  @Input() data: Nullable<ITopic> = null;
+  @Input() data!: ITopic;
   @Output() saveData = new EventEmitter<ITopic>();
 
   isInputDisplay = false;
-
-  question = new FormControl('', [
-    Validators.required,
-    Validators.minLength(1),
-  ]);
-
-  answer = new FormControl('', [
-    Validators.required,
-    Validators.minLength(1),
-  ]);
-
-  get areQuestionsDisplayed() {
-    return !!this.data?.questions.length;
-  }
+  question = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  answer = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
   addQuestion() {
     this.isInputDisplay = true;
@@ -44,25 +47,24 @@ export class TopicComponent {
 
   saveQuestion() {
     if (this.question.valid && this.answer.valid) {
-      this.data?.questions.push({
+      this.data.questions.push({
         id: generateRandomId('question'),
-        question: this.question.getRawValue() as string,
-        answer: this.answer.getRawValue() as string,
+        question: this.question.value as string,
+        answer: this.answer.value as string,
         subQuestions: [],
       });
-      this.question.setValue('');
-      this.answer.setValue('');
+      this.question.reset();
+      this.answer.reset();
       this.isInputDisplay = false;
-      this.saveData.emit(this.data as ITopic);
+      this.saveData.emit(this.data);
     }
   }
 
-  saveQuestionData(data: IQuestion) {
-    this.data?.questions.forEach(question => {
-      if (question.id === data.id) {
-        question = data;
-      }
-    });
-    this.saveData.emit(this.data as ITopic);
+  saveQuestionData(updated: IQuestion) {
+    const idx = this.data.questions.findIndex((q) => q.id === updated.id);
+    if (idx > -1) {
+      this.data.questions[idx] = updated;
+      this.saveData.emit(this.data);
+    }
   }
 }

@@ -1,7 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Nullable } from '../types';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { generateRandomId } from '../helpers';
 
 export interface IQuestion {
@@ -14,25 +18,25 @@ export interface IQuestion {
 @Component({
   selector: 'app-question',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './question.component.html',
-  styleUrl: './question.component.scss'
+  styleUrls: ['./question.component.scss'],
 })
 export class QuestionComponent {
-  @Input() data: Nullable<IQuestion> = null;
+  @Input() data!: IQuestion;
   @Output() saveData = new EventEmitter<IQuestion>();
 
   isInputDisplay = false;
-
-  question = new FormControl('', [
-    Validators.required,
-    Validators.minLength(1),
-  ]);
-
-  answer = new FormControl('', [
-    Validators.required,
-    Validators.minLength(1),
-  ]);
+  question = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  answer = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
   addSubQuestion() {
     this.isInputDisplay = true;
@@ -40,25 +44,24 @@ export class QuestionComponent {
 
   saveSubQuestion() {
     if (this.question.valid && this.answer.valid) {
-      this.data?.subQuestions.push({
-        id: generateRandomId('question'),
-        question: this.question.getRawValue() as string,
-        answer: this.answer.getRawValue() as string,
+      this.data.subQuestions.push({
+        id: generateRandomId('subq'),
+        question: this.question.value as string,
+        answer: this.answer.value as string,
         subQuestions: [],
       });
-      this.question.setValue('');
-      this.answer.setValue('');
+      this.question.reset();
+      this.answer.reset();
       this.isInputDisplay = false;
-      this.saveData.emit(this.data as IQuestion);
+      this.saveData.emit(this.data);
     }
   }
 
-  saveSubQuestionData(data: IQuestion) {
-    this.data?.subQuestions.forEach(subQuestion => {
-      if (subQuestion.id === data.id) {
-        subQuestion = data;
-      }
-    });
-    this.saveData.emit(this.data as IQuestion);
+  saveSubQuestionData(updated: IQuestion) {
+    const idx = this.data.subQuestions.findIndex((s) => s.id === updated.id);
+    if (idx > -1) {
+      this.data.subQuestions[idx] = updated;
+      this.saveData.emit(this.data);
+    }
   }
 }

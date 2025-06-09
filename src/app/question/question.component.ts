@@ -14,7 +14,7 @@ export interface IQuestion {
   id: string;
   question: string;
   answer: string;
-  grade: number;
+  grade?: number;
   subQuestions: IQuestion[];
 }
 
@@ -44,10 +44,12 @@ export class QuestionComponent implements OnInit {
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   gradeCtrl = new FormControl<number|null>(null, [Validators.required]);
-  subGradeCtrl = new FormControl<number | null>(null, Validators.required);
+  subGradeCtrl = new FormControl<number | null>(null);
 
   ngOnInit() {
-    this.gradeCtrl.setValue(this.data.grade);
+    if (this.data?.grade) {
+      this.gradeCtrl.setValue(this.data?.grade);
+    }
     this.gradeCtrl.valueChanges.subscribe((g) => {
       if (g != null) {
         this.data.grade = g;
@@ -61,20 +63,21 @@ export class QuestionComponent implements OnInit {
   }
 
   saveSubQuestion() {
-    if (
-      this.questionCtrl.invalid ||
-      this.answerCtrl.invalid ||
-      this.subGradeCtrl.invalid
-    ) return;
+    if (this.questionCtrl.invalid || this.answerCtrl.invalid) return;
 
-    this.data.subQuestions.push({
+    const gradeValue = this.subGradeCtrl.value;
+    const newSubQuestion: IQuestion = {
       id: generateRandomId('subq'),
-      question: this.questionCtrl.value as string,
-      answer: this.answerCtrl.value as string,
-      grade: this.subGradeCtrl.value as number,
+      question: this.questionCtrl.value!,
+      answer: this.answerCtrl.value!,
       subQuestions: [],
-    });
+    };
 
+    if (gradeValue != null) {
+      newSubQuestion.grade = gradeValue;
+    }
+
+    this.data.subQuestions.push(newSubQuestion);
     this.questionCtrl.reset();
     this.answerCtrl.reset();
     this.subGradeCtrl.reset();

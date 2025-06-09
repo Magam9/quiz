@@ -37,14 +37,13 @@
           {{ g.gradeName }} ({{ g.value }})
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="subGradeCtrl.invalid">Grade is required</mat-error>
     </mat-form-field>
 
     <button
       mat-flat-button
       color="accent"
       (click)="saveSubQuestion()"
-      [disabled]="questionCtrl.invalid || answerCtrl.invalid || subGradeCtrl.invalid"
+      [disabled]="questionCtrl.invalid || answerCtrl.invalid"
       class="save-sub-btn">
       Save
     </button>

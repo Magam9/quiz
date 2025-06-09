@@ -56,9 +56,6 @@
             {{ g.gradeName }} ({{ g.value }})
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="questionForm.get('grade')?.invalid">
-          Grade is required
-        </mat-error>
       </mat-form-field>
 
       <button

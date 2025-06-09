@@ -64,7 +64,7 @@ export class TopicComponent implements OnInit, OnChanges {
   questionForm = new FormGroup({
     question: new FormControl('', [Validators.required]),
     answer: new FormControl('', [Validators.required]),
-    grade: new FormControl<number|null>(null, [Validators.required]),
+    grade: new FormControl<number|null>(null),
   });
 
   ngOnInit() {
@@ -89,7 +89,9 @@ export class TopicComponent implements OnInit, OnChanges {
   }
 
   saveQuestion() {
-    if (this.questionForm.invalid) return;
+    if (this.questionForm.invalid) {
+      return;
+    }
 
     const { question, answer, grade } =
       this.questionForm.value as {

@@ -1,5 +1,4 @@
 <mat-card class="question-card">
-  <!-- Q / A Display Row -->
   <div class="qa-content">
     <div class="qa-row">
       <span class="label">Q:</span>
@@ -11,7 +10,6 @@
     </div>
   </div>
 
-  <!-- “Add Sub-question” Button -->
   <mat-card-actions align="start" class="add-subaction">
     <button mat-stroked-button color="primary" class="add-sub-btn" (click)="addSubQuestion()">
       <mat-icon>add</mat-icon>
@@ -19,31 +17,39 @@
     </button>
   </mat-card-actions>
 
-  <!-- Sub-question Input Form (shown on demand) -->
   <div *ngIf="isInputDisplay" class="sub-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Sub-question</mat-label>
-      <input matInput [formControl]="question" placeholder="Enter sub-question" />
-      <mat-error *ngIf="question.invalid">Required</mat-error>
+      <input matInput [formControl]="questionCtrl" placeholder="Enter sub-question" />
+      <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Answer</mat-label>
-      <input matInput [formControl]="answer" placeholder="Enter answer" />
-      <mat-error *ngIf="answer.invalid">Required</mat-error>
+      <input matInput [formControl]="answerCtrl" placeholder="Enter answer" />
+      <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Grade</mat-label>
+      <mat-select [formControl]="subGradeCtrl">
+        <mat-option *ngFor="let g of grades" [value]="g.position">
+          {{ g.gradeName }} ({{ g.value }})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="subGradeCtrl.invalid">Grade is required</mat-error>
     </mat-form-field>
 
     <button
       mat-flat-button
       color="accent"
       (click)="saveSubQuestion()"
-      [disabled]="question.invalid || answer.invalid"
+      [disabled]="questionCtrl.invalid || answerCtrl.invalid || subGradeCtrl.invalid"
       class="save-sub-btn">
       Save
     </button>
   </div>
 
-  <!-- Nested Sub-questions List -->
   <div class="sub-questions" *ngIf="data.subQuestions.length">
     <app-question
       *ngFor="let sub of data.subQuestions"

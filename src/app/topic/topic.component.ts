@@ -11,6 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -20,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSelectModule } from '@angular/material/select';
 
 import { QuestionComponent, IQuestion } from '../question/question.component';
 import { GradeComponent, IGrade } from '../grade/grade.component';
@@ -46,6 +48,7 @@ export interface ITopic {
     MatDividerModule,
     QuestionComponent,
     GradeComponent,
+    MatSelectModule,
   ],
   templateUrl: './topic.component.html',
   styleUrls: ['./topic.component.scss'],
@@ -57,6 +60,12 @@ export class TopicComponent implements OnInit, OnChanges {
   isInputDisplay = false;
   question = new FormControl('', [Validators.required]);
   answer = new FormControl('', [Validators.required]);
+
+  questionForm = new FormGroup({
+    question: new FormControl('', [Validators.required]),
+    answer: new FormControl('', [Validators.required]),
+    grade: new FormControl<number|null>(null, [Validators.required]),
+  });
 
   ngOnInit() {
     this.loadFromStorage();
@@ -76,17 +85,27 @@ export class TopicComponent implements OnInit, OnChanges {
 
   addQuestion() {
     this.isInputDisplay = true;
+    this.questionForm.reset();
   }
 
   saveQuestion() {
-    if (this.question.invalid || this.answer.invalid) return;
+    if (this.questionForm.invalid) return;
+
+    const { question, answer, grade } =
+      this.questionForm.value as {
+        question: string;
+        answer:   string;
+        grade:    number;
+      };
 
     this.data.questions.push({
       id: generateRandomId('question'),
-      question: this.question.value!,
-      answer: this.answer.value!,
+      question,
+      answer,
+      grade,
       subQuestions: [],
     });
+
     this.resetQuestionForm();
     this.persist();
     this.saveData.emit(this.data);

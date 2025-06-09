@@ -1,8 +1,15 @@
 <mat-card class="topic-card">
   <mat-card-header>
-    <mat-card-title class="topic-title">{{ data.name }}</mat-card-title>
+    <mat-card-title class="topic-title">
+      {{ data.name }}
+    </mat-card-title>
     <mat-card-actions align="end">
-      <button mat-button color="primary" class="add-question-btn" (click)="addQuestion()">
+      <button
+        mat-button
+        color="primary"
+        class="add-question-btn"
+        (click)="addQuestion()"
+      >
         Add Question
         <mat-icon>chevron_right</mat-icon>
       </button>
@@ -13,29 +20,68 @@
     [grades]="data.grades"
     (gradesChange)="saveGrades($event)"
   ></app-grade>
-
   <mat-card-content *ngIf="isInputDisplay" class="question-form">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Question</mat-label>
-      <input matInput [formControl]="question" placeholder="Enter new question" />
-      <mat-error *ngIf="question.invalid">Question is required</mat-error>
-    </mat-form-field>
+    <form [formGroup]="questionForm" (ngSubmit)="saveQuestion()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Question</mat-label>
+        <input
+          matInput
+          formControlName="question"
+          placeholder="Enter new question"
+        />
+        <mat-error *ngIf="questionForm.get('question')?.invalid">
+          Question is required
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Answer</mat-label>
-      <input matInput [formControl]="answer" placeholder="Enter answer" />
-      <mat-error *ngIf="answer.invalid">Answer is required</mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Answer</mat-label>
+        <input
+          matInput
+          formControlName="answer"
+          placeholder="Enter answer"
+        />
+        <mat-error *ngIf="questionForm.get('answer')?.invalid">
+          Answer is required
+        </mat-error>
+      </mat-form-field>
 
-    <button mat-flat-button color="accent" (click)="saveQuestion()" [disabled]="question.invalid || answer.invalid" class="save-question-btn">
-      Save Question
-    </button>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Grade</mat-label>
+        <mat-select formControlName="grade">
+          <mat-option
+            *ngFor="let g of data.grades"
+            [value]="g.position"
+          >
+            {{ g.gradeName }} ({{ g.value }})
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="questionForm.get('grade')?.invalid">
+          Grade is required
+        </mat-error>
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="accent"
+        type="submit"
+        [disabled]="questionForm.invalid"
+        class="save-question-btn"
+      >
+        Save Question
+      </button>
+    </form>
   </mat-card-content>
-  <mat-card-content class="questions-list" *ngIf="data.questions?.length">
+
+  <mat-card-content
+    class="questions-list"
+    *ngIf="data.questions?.length"
+  >
     <app-question
       *ngFor="let q of data.questions"
       [data]="q"
-      (saveData)="saveQuestionData($event)">
-    </app-question>
+      [grades]="data.grades"
+      (saveData)="saveQuestionData($event)"
+    ></app-question>
   </mat-card-content>
 </mat-card>

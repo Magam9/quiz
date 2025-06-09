@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -7,11 +7,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { generateRandomId } from '../helpers';
+import { IGrade } from '../grade/grade.component';
+import { MatSelectModule } from '@angular/material/select';
 
 export interface IQuestion {
   id: string;
   question: string;
   answer: string;
+  grade: number;
   subQuestions: IQuestion[];
 }
 
@@ -26,35 +29,57 @@ export interface IQuestion {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
 })
-export class QuestionComponent {
+export class QuestionComponent implements OnInit {
   @Input() data!: IQuestion;
   @Output() saveData = new EventEmitter<IQuestion>();
+  @Input() grades: IGrade[] = [];
+
 
   isInputDisplay = false;
-  question = new FormControl('', [Validators.required, Validators.minLength(1)]);
-  answer = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  gradeCtrl = new FormControl<number|null>(null, [Validators.required]);
+  subGradeCtrl = new FormControl<number | null>(null, Validators.required);
+
+  ngOnInit() {
+    this.gradeCtrl.setValue(this.data.grade);
+    this.gradeCtrl.valueChanges.subscribe((g) => {
+      if (g != null) {
+        this.data.grade = g;
+        this.saveData.emit(this.data);
+      }
+    });
+  }
 
   addSubQuestion() {
     this.isInputDisplay = true;
   }
 
   saveSubQuestion() {
-    if (this.question.valid && this.answer.valid) {
-      this.data.subQuestions.push({
-        id: generateRandomId('subq'),
-        question: this.question.value as string,
-        answer: this.answer.value as string,
-        subQuestions: [],
-      });
-      this.question.reset();
-      this.answer.reset();
-      this.isInputDisplay = false;
-      this.saveData.emit(this.data);
-    }
+    if (
+      this.questionCtrl.invalid ||
+      this.answerCtrl.invalid ||
+      this.subGradeCtrl.invalid
+    ) return;
+
+    this.data.subQuestions.push({
+      id: generateRandomId('subq'),
+      question: this.questionCtrl.value as string,
+      answer: this.answerCtrl.value as string,
+      grade: this.subGradeCtrl.value as number,
+      subQuestions: [],
+    });
+
+    this.questionCtrl.reset();
+    this.answerCtrl.reset();
+    this.subGradeCtrl.reset();
+    this.isInputDisplay = false;
+    this.saveData.emit(this.data);
   }
 
   saveSubQuestionData(updated: IQuestion) {

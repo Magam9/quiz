@@ -1,0 +1,35 @@
+.grade-card {
+  margin-bottom: 16px;
+}
+
+.grade-form {
+  padding: 16px 0;
+}
+
+.grade-form-fields {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.grade-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.grade-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.grade-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.spacer {
+  flex: 1;
+}

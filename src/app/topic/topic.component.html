@@ -1,5 +1,4 @@
 <mat-card class="topic-card">
-  <!-- Header: Topic Name + “Add Question” -->
   <mat-card-header>
     <mat-card-title class="topic-title">{{ data.name }}</mat-card-title>
     <mat-card-actions align="end">
@@ -10,7 +9,11 @@
     </mat-card-actions>
   </mat-card-header>
 
-  <!-- If user clicked “Add Question”, show form -->
+  <app-grade
+    [grades]="data.grades"
+    (gradesChange)="saveGrades($event)"
+  ></app-grade>
+
   <mat-card-content *ngIf="isInputDisplay" class="question-form">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Question</mat-label>
@@ -28,8 +31,6 @@
       Save Question
     </button>
   </mat-card-content>
-
-  <!-- List of Questions (each is a <app-question>) -->
   <mat-card-content class="questions-list" *ngIf="data.questions?.length">
     <app-question
       *ngFor="let q of data.questions"

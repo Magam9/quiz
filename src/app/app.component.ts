@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
         id: generateRandomId('topic'),
         name: this.topic.value as string,
         questions: [],
+        grades: [],
       });
       this.topic.reset();
       this.isInputDisplay = false;

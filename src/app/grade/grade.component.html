@@ -1,16 +1,10 @@
 <mat-card class="grade-card mat-elevation-z2">
   <mat-card-header>
     <mat-card-title>Grades</mat-card-title>
-    <mat-card-actions>
-      <button
-        mat-icon-button
-        color="primary"
-        (click)="toggleAdd()"
-        matTooltip="{{ isAdding ? 'Cancel' : 'Add Grade' }}"
-      >
-        <mat-icon>{{ isAdding ? 'close' : 'add' }}</mat-icon>
-      </button>
-    </mat-card-actions>
+    <mat-icon
+      (click)="toggleAdd()"
+      matTooltip="{{ isAdding ? 'Cancel' : 'Add Grade' }}"
+    >{{ isAdding ? 'close' : 'add' }}</mat-icon>
   </mat-card-header>
 
   <mat-card-content *ngIf="isAdding" class="grade-form">
@@ -59,9 +53,9 @@
         <mat-icon cdkDragHandle>drag_indicator</mat-icon>
         <span>{{ g.position }}. {{ g.gradeName }} ({{ g.value }})</span>
         <span class="spacer"></span>
-        <button mat-icon-button color="warn" (click)="removeGrade(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
+        <mat-icon
+          (click)="removeGrade(i)"
+        >delete</mat-icon>
       </div>
     </div>
   </mat-card-content>

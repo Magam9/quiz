@@ -53,6 +53,7 @@
     <app-question
       *ngFor="let sub of data.subQuestions"
       [data]="sub"
+      [grades]="grades"
       (saveData)="saveSubQuestionData($event)">
     </app-question>
   </div>

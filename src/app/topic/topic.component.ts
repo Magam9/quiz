@@ -106,6 +106,7 @@ export class TopicComponent implements OnInit, OnChanges {
       answer,
       grade,
       subQuestions: [],
+      currentValue: 0,
     });
 
     this.resetQuestionForm();

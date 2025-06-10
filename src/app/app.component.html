@@ -34,6 +34,18 @@
     </button>
   </div>
 
+  <div class="run-summary">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openSummaryDialog()"
+      [disabled]="!data.topics.length"
+    >
+      <mat-icon>play_arrow</mat-icon>
+      Run Summary
+    </button>
+  </div>
+
   <!-- 3) Accordions for Each Topic -->
   <mat-accordion class="topic-accordion">
     <mat-expansion-panel *ngFor="let topic of data?.topics">

@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>Evaluate Topic</h2>
+<mat-dialog-content>
+  <ng-container *ngIf="!selectedTopic">
+    <p>Select a topic to begin:</p>
+    <div class="topic-list">
+      <button
+        mat-stroked-button
+        *ngFor="let topic of topics"
+        (click)="selectTopic(topic)">
+        {{ topic.name }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="selectedTopic">
+    <ng-container *ngIf="currentIndex < flatQuestions.length; else summary">
+      <p><strong>Q:</strong> {{ flatQuestions[currentIndex].question }}</p>
+      <p><strong>A:</strong> {{ flatQuestions[currentIndex].answer }}</p>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Current Value</mat-label>
+        <input
+          matInput
+          type="number"
+          [formControl]="currentValueCtrl"
+          placeholder="Enter value"
+        />
+        <mat-error *ngIf="currentValueCtrl.invalid">Required & ≥ 0</mat-error>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="goNext()"
+        [disabled]="currentValueCtrl.invalid"
+      >
+        {{ currentIndex + 1 < flatQuestions.length ? 'Next' : 'Finish' }}
+      </button>
+    </ng-container>
+
+    <ng-template #summary>
+      <h3>✅ Topic Completed</h3>
+      <p>Total Score: <strong>{{ calculateScore() }}</strong></p>
+      <button mat-stroked-button color="primary" (click)="close()">Close</button>
+    </ng-template>
+  </ng-container>
+</mat-dialog-content>

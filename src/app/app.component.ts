@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { TopicComponent, ITopic } from './topic/topic.component';
 import { generateRandomId } from './helpers';
+import { MatDialog } from '@angular/material/dialog';
+import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
 
 export interface IQuiz {
   topics: ITopic[];
@@ -36,6 +38,10 @@ export class AppComponent implements OnInit {
   topic = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
   data: IQuiz = { topics: [] };
+
+  constructor(
+    private readonly dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     const saved = localStorage.getItem('quiz');
@@ -74,5 +80,15 @@ export class AppComponent implements OnInit {
     this.data = { topics: [] };
     localStorage.removeItem('quiz');
     this.isInputDisplay = false;
+  }
+
+  openSummaryDialog() {
+    this.dialog.open(SummaryDialogComponent, {
+      width: '850px',
+      maxHeight: '90vh',
+      data: this.data.topics,
+      autoFocus: false,
+      disableClose: true
+    });
   }
 }

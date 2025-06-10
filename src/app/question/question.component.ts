@@ -15,6 +15,7 @@ export interface IQuestion {
   question: string;
   answer: string;
   grade?: number;
+  currentValue: number;
   subQuestions: IQuestion[];
 }
 
@@ -71,6 +72,7 @@ export class QuestionComponent implements OnInit {
       question: this.questionCtrl.value!,
       answer: this.answerCtrl.value!,
       subQuestions: [],
+      currentValue: 0,
     };
 
     if (gradeValue != null) {

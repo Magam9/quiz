@@ -50,7 +50,9 @@ export class SummaryDialogComponent {
     const walk = (qs: IQuestion[]) => {
       for (const q of qs) {
         result.push(q);
-        if (q.subQuestions?.length) walk(q.subQuestions);
+        if (q.subQuestions?.length) {
+          walk(q.subQuestions);
+        }
       }
     };
     walk(questions);
@@ -59,12 +61,15 @@ export class SummaryDialogComponent {
 
   goNext() {
     const current = this.flatQuestions[this.currentIndex];
-    if (this.currentValueCtrl.invalid || !current) return;
+    if (this.currentValueCtrl.invalid || !current) {
+      return;
+    }
 
     current.currentValue = this.currentValueCtrl.value ?? 0;
     this.currentIndex++;
 
     if (this.currentIndex < this.flatQuestions.length) {
+      this.currentValueCtrl.reset();
       this.currentValueCtrl.setValue(
         this.flatQuestions[this.currentIndex]?.currentValue ?? null
       );

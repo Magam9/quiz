@@ -15,7 +15,7 @@ export interface IQuestion {
   question: string;
   answer: string;
   grade?: number;
-  currentValue: number;
+  currentValue: number | null;
   subQuestions: IQuestion[];
 }
 

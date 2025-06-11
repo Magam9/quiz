@@ -49,6 +49,7 @@ export class SummaryDialogComponent {
     const result: IQuestion[] = [];
     const walk = (qs: IQuestion[]) => {
       for (const q of qs) {
+        q.currentValue = null;
         result.push(q);
         if (q.subQuestions?.length) {
           walk(q.subQuestions);
@@ -84,6 +85,7 @@ export class SummaryDialogComponent {
   }
 
   close() {
+    this.currentValueCtrl.reset();
     this.dialogRef.close();
   }
 }

@@ -14,6 +14,9 @@
 
   <ng-container *ngIf="selectedTopic">
     <ng-container *ngIf="currentIndex < flatQuestions.length; else summary">
+      <p class="question-counter">
+        Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}
+      </p>
       <p><strong>Q:</strong> {{ flatQuestions[currentIndex].question }}</p>
       <p><strong>A:</strong> {{ flatQuestions[currentIndex].answer }}</p>
 

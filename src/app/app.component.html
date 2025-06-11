@@ -3,8 +3,6 @@
 </mat-toolbar>
 
 <div class="app-container">
-
-  <!-- 1) Inline “New Topic” Form (only shown when isInputDisplay = true) -->
   <div *ngIf="isInputDisplay" class="new-topic-wrapper">
     <mat-form-field appearance="outline" class="new-topic-field">
       <mat-label>New Topic</mat-label>
@@ -22,7 +20,6 @@
     </button>
   </div>
 
-  <!-- 2) “Add Topic” & “Clear All” Actions -->
   <div class="toolbar-actions">
     <button mat-flat-button color="accent" (click)="addTopic()" class="add-topic-btn">
       <mat-icon>add</mat-icon>
@@ -46,7 +43,6 @@
     </button>
   </div>
 
-  <!-- 3) Accordions for Each Topic -->
   <mat-accordion class="topic-accordion">
     <mat-expansion-panel *ngFor="let topic of data?.topics">
       <mat-expansion-panel-header>
@@ -55,7 +51,6 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <!-- Inside each expanded panel, we delegate to <app-topic> -->
       <app-topic [data]="topic" (saveData)="saveTopicData($event)"></app-topic>
     </mat-expansion-panel>
   </mat-accordion>

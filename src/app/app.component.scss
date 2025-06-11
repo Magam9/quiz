@@ -1,6 +1,5 @@
-/* --------------- Toolbar --------------- */
 .main-toolbar {
-  background-color: #673ab7; /* deep purple */
+  background-color: #673ab7;
   color: #ffffff;
   position: sticky;
   top: 0;
@@ -13,16 +12,14 @@
   letter-spacing: -0.5px;
 }
 
-/* --------------- Container --------------- */
 .app-container {
-  background: #fafafa; /* very light grey */
-  color: #212121;     /* dark text for readability */
+  background: #fafafa;
+  color: #212121;
   padding: 24px;
   max-width: 960px;
   margin: auto;
 }
 
-/* --------------- “New Topic” Inline Form --------------- */
 .new-topic-wrapper {
   display: flex;
   align-items: center;
@@ -34,14 +31,12 @@
   flex: 1;
 }
 
-/* Make the “Save Topic” button a deep purple fill */
 .save-topic-btn {
   background-color: #673ab7;
   color: #ffffff;
   text-transform: none;
 }
 
-/* --------------- Toolbar Actions (“Add Topic”, “Clear All”) --------------- */
 .toolbar-actions {
   display: flex;
   justify-content: space-between;
@@ -50,16 +45,14 @@
   gap: 12px;
 }
 
-/* “Add Topic” in magenta to match screenshot */
 .add-topic-btn {
-  background-color: #d81b60; /* magenta */
+  background-color: #d81b60;
   color: #ffffff;
   text-transform: none;
 }
 
-/* --------------- Accordion --------------- */
 .topic-accordion {
-  background: transparent; /* let individual cards control their own background */
+  background: transparent;
 }
 
 .run-summary {

@@ -1,4 +1,3 @@
-// src/app/topic/topic.component.ts
 import {
   Component,
   EventEmitter,

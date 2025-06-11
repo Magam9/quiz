@@ -114,7 +114,7 @@ export class TopicComponent implements OnInit, OnChanges {
   }
 
   saveQuestionData(updated: IQuestion) {
-    const idx = this.data.questions.findIndex((q) => q.id === updated.id);
+    const idx = this.data.questions.findIndex((question) => question.id === updated.id);
     if (idx > -1) {
       this.data.questions[idx] = updated;
       this.persist();

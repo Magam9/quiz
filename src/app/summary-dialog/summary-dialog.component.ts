@@ -47,12 +47,12 @@ export class SummaryDialogComponent {
 
   flattenQuestions(questions: IQuestion[]): IQuestion[] {
     const result: IQuestion[] = [];
-    const walk = (qs: IQuestion[]) => {
-      for (const q of qs) {
-        q.currentValue = null;
-        result.push(q);
-        if (q.subQuestions?.length) {
-          walk(q.subQuestions);
+    const walk = (questions: IQuestion[]) => {
+      for (const question of questions) {
+        question.currentValue = null;
+        result.push(question);
+        if (question.subQuestions?.length) {
+          walk(question.subQuestions);
         }
       }
     };

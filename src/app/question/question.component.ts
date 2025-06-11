@@ -51,9 +51,9 @@ export class QuestionComponent implements OnInit {
     if (this.data?.grade) {
       this.gradeCtrl.setValue(this.data?.grade);
     }
-    this.gradeCtrl.valueChanges.subscribe((g) => {
-      if (g != null) {
-        this.data.grade = g;
+    this.gradeCtrl.valueChanges.subscribe((grade) => {
+      if (grade != null) {
+        this.data.grade = grade;
         this.saveData.emit(this.data);
       }
     });
@@ -88,7 +88,7 @@ export class QuestionComponent implements OnInit {
   }
 
   saveSubQuestionData(updated: IQuestion) {
-    const idx = this.data.subQuestions.findIndex((s) => s.id === updated.id);
+    const idx = this.data.subQuestions.findIndex((subQuestion) => subQuestion.id === updated.id);
     if (idx > -1) {
       this.data.subQuestions[idx] = updated;
       this.saveData.emit(this.data);

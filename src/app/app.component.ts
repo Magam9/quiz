@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
   }
 
   saveTopicData(updatedTopic: ITopic) {
-    const idx = this.data.topics.findIndex(t => t.id === updatedTopic.id);
+    const idx = this.data.topics.findIndex((topic) => topic.id === updatedTopic.id);
     if (idx > -1) {
       this.data.topics[idx] = updatedTopic;
       localStorage.setItem('quiz', JSON.stringify(this.data));

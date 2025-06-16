@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -7,11 +7,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { TopicComponent } from './topic/topic.component';
-import { generateRandomId } from './helpers';
 import { MatDialog } from '@angular/material/dialog';
+
+import { TopicComponent } from './topic/topic.component';
 import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
+import { generateRandomId } from './helpers';
+
 import { IQuiz, ITopic } from './core/models';
+import { DATA_ADAPTER, provideDataAdapter } from './core/data/data-adapter-injector';
+import { LocalStorageDataAdapter } from './core/data/adapters/local-storage.adapter';
+import { RestDataAdapter } from './core/data/adapters/rest.adapter';
+import { GrpcDataAdapter } from './core/data/adapters/grpc.adapter';
+import { SocketDataAdapter } from './core/data/adapters/socket.adapter';
+import { environment } from '../../environment';
+
+export function selectAdapter() {
+  switch (environment.transport) {
+    case 'rest':
+      return RestDataAdapter; // not tested
+    case 'grpc':
+      return GrpcDataAdapter; // not tested
+    case 'socket':
+      return SocketDataAdapter; // not tested
+    default:
+      return LocalStorageDataAdapter; // tested
+  }
+}
 
 @Component({
   selector: 'app-root',
@@ -27,6 +48,9 @@ import { IQuiz, ITopic } from './core/models';
     MatExpansionModule,
     TopicComponent,
   ],
+  providers: [
+    provideDataAdapter(selectAdapter()),
+  ],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
@@ -36,15 +60,18 @@ export class AppComponent implements OnInit {
 
   data: IQuiz = { topics: [] };
 
-  constructor(
-    private readonly dialog: MatDialog,
-  ) {}
+  private readonly dialog = inject(MatDialog);
+  private readonly dataAdapter = inject(DATA_ADAPTER);
 
   ngOnInit(): void {
-    const saved = localStorage.getItem('quiz');
-    if (saved) {
-      this.data = JSON.parse(saved);
-    }
+    this.dataAdapter.getTopics().subscribe({
+      next: (topics) => {
+        this.data.topics = topics;
+      },
+      error: (err) => {
+        console.error('Failed to load topics:', err);
+      }
+    });
   }
 
   addTopic() {
@@ -52,30 +79,34 @@ export class AppComponent implements OnInit {
   }
 
   saveTopic() {
-    if (this.topic.valid) {
-      this.data.topics.push({
-        id: generateRandomId('topic'),
-        name: this.topic.value as string,
-        questions: [],
-        grades: [],
-      });
+    if (this.topic.invalid) return;
+
+    const newTopic: ITopic = {
+      id: generateRandomId('topic'),
+      name: this.topic.value as string,
+      questions: [],
+      grades: [],
+    };
+
+    this.dataAdapter.saveTopic(newTopic).subscribe(() => {
+      this.data.topics.push(newTopic);
       this.topic.reset();
       this.isInputDisplay = false;
-      localStorage.setItem('quiz', JSON.stringify(this.data));
-    }
+    });
   }
 
   saveTopicData(updatedTopic: ITopic) {
-    const idx = this.data.topics.findIndex((topic) => topic.id === updatedTopic.id);
-    if (idx > -1) {
-      this.data.topics[idx] = updatedTopic;
-      localStorage.setItem('quiz', JSON.stringify(this.data));
-    }
+    this.dataAdapter.saveTopic(updatedTopic).subscribe(() => {
+      const idx = this.data.topics.findIndex(t => t.id === updatedTopic.id);
+      if (idx !== -1) {
+        this.data.topics[idx] = updatedTopic;
+      }
+    });
   }
 
   cleanAll() {
-    this.data = { topics: [] };
-    localStorage.removeItem('quiz');
+    this.data.topics = [];
+    localStorage.removeItem('quizbuilder_topics');
     this.isInputDisplay = false;
   }
 

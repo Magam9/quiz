@@ -26,6 +26,7 @@ import { QuestionComponent } from '../question/question.component';
 import { GradeComponent } from '../grade/grade.component';
 import { generateRandomId } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
+import { Topic } from '../core/grpc/generated/quiz.pb';
 
 @Component({
   selector: 'app-topic',

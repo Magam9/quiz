@@ -1,0 +1,54 @@
+syntax = "proto3";
+package quiz;
+
+message Grade {
+  string gradeName = 1;
+  int32 value = 2;
+  int32 position = 3;
+}
+
+message Question {
+  string id = 1;
+  string question = 2;
+  string answer = 3;
+  int32 currentValue = 4;
+  int32 grade = 5;
+  repeated Question subQuestions = 6;
+}
+
+message Topic {
+  string id = 1;
+  string name = 2;
+  repeated Grade grades = 3;
+  repeated Question questions = 4;
+}
+
+message ListTopicsRequest {}
+message ListTopicsResponse {
+  repeated Topic topics = 1;
+}
+
+message SaveTopicRequest {
+  Topic topic = 1;
+}
+message SaveTopicResponse {}
+
+message SaveQuestionRequest {
+  string topicId = 1;
+  Question question = 2;
+}
+message SaveQuestionResponse {}
+
+message SaveCurrentValueRequest {
+  string topicId = 1;
+  string questionId = 2;
+  int32 currentValue = 3;
+}
+message SaveCurrentValueResponse {}
+
+service TopicService {
+  rpc ListTopics(ListTopicsRequest) returns (ListTopicsResponse);
+  rpc SaveTopic(SaveTopicRequest) returns (SaveTopicResponse);
+  rpc SaveQuestion(SaveQuestionRequest) returns (SaveQuestionResponse);
+  rpc SaveCurrentValue(SaveCurrentValueRequest) returns (SaveCurrentValueResponse);
+}

@@ -1,3 +1,5 @@
+import { Topic } from "./grpc/generated/quiz.pb";
+
 export interface IGrade {
   gradeName: string;
   value: number;

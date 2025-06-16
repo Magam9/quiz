@@ -7,14 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { TopicComponent, ITopic } from './topic/topic.component';
+import { TopicComponent } from './topic/topic.component';
 import { generateRandomId } from './helpers';
 import { MatDialog } from '@angular/material/dialog';
 import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
-
-export interface IQuiz {
-  topics: ITopic[];
-}
+import { IQuiz, ITopic } from './core/models';
 
 @Component({
   selector: 'app-root',

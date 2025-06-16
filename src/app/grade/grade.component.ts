@@ -19,12 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltip } from '@angular/material/tooltip';
-
-export interface IGrade {
-  gradeName: string;
-  value: number;
-  position: number;
-}
+import { IGrade } from '../core/models';
 
 @Component({
   selector: 'app-grade',

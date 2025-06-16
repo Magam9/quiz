@@ -22,16 +22,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 
-import { QuestionComponent, IQuestion } from '../question/question.component';
-import { GradeComponent, IGrade } from '../grade/grade.component';
+import { QuestionComponent } from '../question/question.component';
+import { GradeComponent } from '../grade/grade.component';
 import { generateRandomId } from '../helpers';
-
-export interface ITopic {
-  id: string;
-  name: string;
-  questions: IQuestion[];
-  grades: IGrade[];
-}
+import { IQuestion, ITopic } from '../core/models';
 
 @Component({
   selector: 'app-topic',

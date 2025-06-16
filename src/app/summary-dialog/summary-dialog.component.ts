@@ -5,9 +5,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-
-import { ITopic } from '../topic/topic.component';
-import { IQuestion } from '../question/question.component';
+import { IQuestion, ITopic } from '../core/models';
 
 @Component({
   selector: 'app-summary-dialog',

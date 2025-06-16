@@ -7,17 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { generateRandomId } from '../helpers';
-import { IGrade } from '../grade/grade.component';
 import { MatSelectModule } from '@angular/material/select';
-
-export interface IQuestion {
-  id: string;
-  question: string;
-  answer: string;
-  grade?: number;
-  currentValue: number | null;
-  subQuestions: IQuestion[];
-}
+import { IGrade, IQuestion } from '../core/models';
 
 @Component({
   selector: 'app-question',

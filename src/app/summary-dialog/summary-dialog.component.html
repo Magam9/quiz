@@ -28,7 +28,24 @@
           [formControl]="currentValueCtrl"
           placeholder="Enter value"
         />
-        <mat-error *ngIf="currentValueCtrl.invalid">Required & ≥ 0</mat-error>
+        
+        @if (currentValueCtrl.hasError('required')) {
+          <mat-error>
+            Value is required.
+          </mat-error>
+        }
+
+        @if (currentValueCtrl.hasError('min')) {
+          <mat-error>
+            Value must be 0 or greater.
+          </mat-error>
+        }
+        
+        @if (currentGradeValue && currentValueCtrl.hasError('max')) {
+          <mat-error>
+            Value exceeds the maximum grade ({{ currentGradeValue }}).
+          </mat-error>
+        }
       </mat-form-field>
 
       <button

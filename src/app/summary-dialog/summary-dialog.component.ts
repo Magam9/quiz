@@ -27,6 +27,7 @@ export class SummaryDialogComponent {
   selectedTopic: ITopic | null = null;
   flatQuestions: IQuestion[] = [];
   currentIndex = 0;
+  currentGradeValue: number | null = null;
 
   currentValueCtrl = new FormControl<number | null>(null, [
     Validators.required,
@@ -43,6 +44,30 @@ export class SummaryDialogComponent {
     this.flatQuestions = this.flattenQuestions(topic.questions);
     this.currentIndex = 0;
     this.currentValueCtrl.setValue(this.flatQuestions[0]?.currentValue ?? null);
+    this.setValidatorsForCurrentQuestion();
+  }
+
+  setValidatorsForCurrentQuestion() {
+    this.currentGradeValue = null;
+    const current = this.flatQuestions[this.currentIndex];
+    if (!current) {
+      return;
+    }
+
+    const validators = [Validators.required, Validators.min(0)];
+
+    if (typeof current.grade === 'number' && current.grade > 0) {
+      const grade = this.selectedTopic?.grades.at(current.grade);
+      if (grade?.value) {
+        this.currentGradeValue = grade.value;
+        validators.push(Validators.max(grade?.value));
+      }
+    }
+
+    this.currentValueCtrl.setValidators(validators);
+    this.currentValueCtrl.updateValueAndValidity();
+
+    this.currentValueCtrl.setValue(current.currentValue ?? null);
   }
 
   flattenQuestions(questions: IQuestion[]): IQuestion[] {

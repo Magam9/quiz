@@ -46,9 +46,13 @@ message SaveCurrentValueRequest {
 }
 message SaveCurrentValueResponse {}
 
+message EmptyRequest {}
+message EmptyResponse {}
+
 service TopicService {
   rpc ListTopics(ListTopicsRequest) returns (ListTopicsResponse);
   rpc SaveTopic(SaveTopicRequest) returns (SaveTopicResponse);
   rpc SaveQuestion(SaveQuestionRequest) returns (SaveQuestionResponse);
   rpc SaveCurrentValue(SaveCurrentValueRequest) returns (SaveCurrentValueResponse);
+  rpc cleanAll(EmptyRequest) returns (EmptyResponse);
 }

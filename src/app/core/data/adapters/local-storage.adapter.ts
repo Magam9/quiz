@@ -1,11 +1,10 @@
-// src/app/core/data/adapters/localstorage-data.adapter.ts
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 
 import { IDataAdapter } from '../types';
 import { IQuestion, ITopic } from '../../models';
 
-const STORAGE_KEY = 'quizbuilder_topics';
+export const STORAGE_KEY = 'quizbuilder_topics';
 
 @Injectable()
 export class LocalStorageDataAdapter implements IDataAdapter<ITopic, IQuestion> {
@@ -75,6 +74,11 @@ export class LocalStorageDataAdapter implements IDataAdapter<ITopic, IQuestion> 
     }
 
     this.writeAll(topics);
+    return of(void 0);
+  }
+
+  cleanAll(): Observable<void> {
+    localStorage.removeItem('quizbuilder_topics');
     return of(void 0);
   }
 

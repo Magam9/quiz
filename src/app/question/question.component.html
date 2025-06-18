@@ -17,37 +17,55 @@
     </button>
   </mat-card-actions>
 
-  <div *ngIf="isInputDisplay" class="sub-form">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Sub-question</mat-label>
-      <input matInput [formControl]="questionCtrl" placeholder="Enter sub-question" />
-      <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
-    </mat-form-field>
+  @if (isInputDisplay) {
+    <div class="sub-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sub-question</mat-label>
+        <input
+          matInput
+          [formControl]="questionCtrl"
+          placeholder="Enter sub-question" />
+        <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Answer</mat-label>
-      <input matInput [formControl]="answerCtrl" placeholder="Enter answer" />
-      <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Answer</mat-label>
+        <input
+          matInput
+          [formControl]="answerCtrl"
+          placeholder="Enter answer" />
+        <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Grade</mat-label>
-      <mat-select [formControl]="subGradeCtrl">
-        <mat-option *ngFor="let g of grades" [value]="g.position">
-          {{ g.gradeName }} ({{ g.value }})
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Grade</mat-label>
+        <mat-select [formControl]="subGradeCtrl">
+          <mat-option *ngFor="let grade of grades" [value]="grade.position">
+            {{ grade.gradeName }} ({{ grade.value }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <button
-      mat-flat-button
-      color="accent"
-      (click)="saveSubQuestion()"
-      [disabled]="questionCtrl.invalid || answerCtrl.invalid"
-      class="save-sub-btn">
-      Save
-    </button>
-  </div>
+      <div class="sub-actions">
+        <button
+          mat-flat-button
+          color="accent"
+          class="save-sub-btn"
+          (click)="saveSubQuestion()"
+          [disabled]="questionCtrl.invalid || answerCtrl.invalid">
+          Save
+        </button>
+
+        <button
+          mat-stroked-button
+          color="warn"
+          class="cancel-sub-btn"
+          (click)="cancelSubQuestion()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  }
 
   <div class="sub-questions" *ngIf="data.subQuestions.length">
     <app-question

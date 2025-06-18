@@ -42,7 +42,7 @@ mat-card-header {
 }
 
 .save-question-btn {
-  background-color: #d81b60;
+  background-color: #7b1fa2;
   color: #ffffff;
   text-transform: none;
   align-self: flex-start;
@@ -53,4 +53,14 @@ mat-card-header {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.cancel-question-btn {
+  text-transform: none;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }

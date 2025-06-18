@@ -42,4 +42,9 @@ export class SocketDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     });
     return of(void 0);
   }
+
+  cleanAll(): Observable<void> {
+    this.socket.emit('topics:delete-all');
+    return of(void 0);
+  }
 }

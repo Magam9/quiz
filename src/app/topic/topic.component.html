@@ -21,7 +21,7 @@
     (gradesChange)="saveGrades($event)"
   ></app-grade>
   <mat-card-content *ngIf="isInputDisplay" class="question-form">
-    <form [formGroup]="questionForm" (ngSubmit)="saveQuestion()">
+    <form [formGroup]="questionForm">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Question</mat-label>
         <input
@@ -58,15 +58,25 @@
         </mat-select>
       </mat-form-field>
 
-      <button
-        mat-flat-button
-        color="accent"
-        type="submit"
-        [disabled]="questionForm.invalid"
-        class="save-question-btn"
-      >
-        Save Question
-      </button>
+      <div class="form-actions">
+        <button
+          mat-flat-button
+          color="accent"
+          (click)="saveQuestion($event)"
+          [disabled]="questionForm.invalid"
+          class="save-question-btn">
+          Save
+        </button>
+
+        <button
+          mat-stroked-button
+          color="warn"
+          type="button"
+          (click)="cancelQuestion()"
+          class="cancel-question-btn">
+          Cancel
+        </button>
+      </div>
     </form>
   </mat-card-content>
 

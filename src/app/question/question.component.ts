@@ -85,4 +85,12 @@ export class QuestionComponent implements OnInit {
       this.saveData.emit(this.data);
     }
   }
+
+  cancelSubQuestion() {
+    this.questionCtrl.reset();
+    this.answerCtrl.reset();
+    this.subGradeCtrl.reset();
+
+    this.isInputDisplay = false;
+  }
 }

@@ -12,4 +12,6 @@ export interface IDataAdapter<TTopic, TQuestion> {
     questionId: string,
     currentValue: number
   ): Observable<void>;
+
+  cleanAll(): Observable<void>;
 }

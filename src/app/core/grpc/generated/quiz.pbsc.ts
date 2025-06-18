@@ -117,6 +117,27 @@ export class TopicServiceClient {
         requestClass: thisProto.SaveCurrentValueRequest,
         responseClass: thisProto.SaveCurrentValueResponse
       });
+    },
+    /**
+     * Unary call: /quiz.TopicService/cleanAll
+     *
+     * @param requestMessage Request message
+     * @param requestMetadata Request metadata
+     * @returns Observable<GrpcEvent<thisProto.EmptyResponse>>
+     */
+    cleanAll: (
+      requestData: thisProto.EmptyRequest,
+      requestMetadata = new GrpcMetadata()
+    ): Observable<GrpcEvent<thisProto.EmptyResponse>> => {
+      return this.handler.handle({
+        type: GrpcCallType.unary,
+        client: this.client,
+        path: '/quiz.TopicService/cleanAll',
+        requestData,
+        requestMetadata,
+        requestClass: thisProto.EmptyRequest,
+        responseClass: thisProto.EmptyResponse
+      });
     }
   };
 
@@ -189,6 +210,22 @@ export class TopicServiceClient {
   ): Observable<thisProto.SaveCurrentValueResponse> {
     return this.$raw
       .saveCurrentValue(requestData, requestMetadata)
+      .pipe(throwStatusErrors(), takeMessages());
+  }
+
+  /**
+   * Unary call @/quiz.TopicService/cleanAll
+   *
+   * @param requestMessage Request message
+   * @param requestMetadata Request metadata
+   * @returns Observable<thisProto.EmptyResponse>
+   */
+  cleanAll(
+    requestData: thisProto.EmptyRequest,
+    requestMetadata = new GrpcMetadata()
+  ): Observable<thisProto.EmptyResponse> {
+    return this.$raw
+      .cleanAll(requestData, requestMetadata)
       .pipe(throwStatusErrors(), takeMessages());
   }
 }

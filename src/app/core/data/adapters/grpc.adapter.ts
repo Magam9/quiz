@@ -12,6 +12,7 @@ import {
   Topic,
   Question,
   Grade,
+  EmptyRequest,
 } from '../../grpc/generated/quiz.pb';
 
 import { ITopic, IQuestion, IGrade } from '../../models';
@@ -52,6 +53,10 @@ export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
         new SaveCurrentValueRequest({ topicId, questionId, currentValue })
       )
       .pipe(map(() => void 0));
+  }
+
+  cleanAll(): Observable<void> {
+    return this.client.cleanAll({} as EmptyRequest).pipe(map(() => void 0));
   }
 
   private toProtoTopic = (topic: ITopic): Topic =>

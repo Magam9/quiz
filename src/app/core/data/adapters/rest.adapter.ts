@@ -29,4 +29,8 @@ export class RestDataAdapter implements IDataAdapter<ITopic, IQuestion> {
       { currentValue }
     );
   }
+
+  cleanAll(): Observable<void> {
+    return this.http.post<void>(`${this.api}/topics/delete/all`, {});
+  }
 }

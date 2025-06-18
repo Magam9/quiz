@@ -1716,3 +1716,226 @@ export module SaveCurrentValueResponse {
    */
   export interface AsProtobufJSON {}
 }
+
+/**
+ * Message implementation for quiz.EmptyRequest
+ */
+export class EmptyRequest implements GrpcMessage {
+  static id = 'quiz.EmptyRequest';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new EmptyRequest();
+    EmptyRequest.deserializeBinaryFromReader(instance, new BinaryReader(bytes));
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: EmptyRequest) {}
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: EmptyRequest,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        default:
+          _reader.skipField();
+      }
+    }
+
+    EmptyRequest.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: EmptyRequest,
+    _writer: BinaryWriter
+  ) {}
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of EmptyRequest to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<EmptyRequest.AsObject>) {
+    _value = _value || {};
+    EmptyRequest.refineValues(this);
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    EmptyRequest.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): EmptyRequest.AsObject {
+    return {};
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): EmptyRequest.AsProtobufJSON {
+    return {};
+  }
+}
+export module EmptyRequest {
+  /**
+   * Standard JavaScript object representation for EmptyRequest
+   */
+  export interface AsObject {}
+
+  /**
+   * Protobuf JSON representation for EmptyRequest
+   */
+  export interface AsProtobufJSON {}
+}
+
+/**
+ * Message implementation for quiz.EmptyResponse
+ */
+export class EmptyResponse implements GrpcMessage {
+  static id = 'quiz.EmptyResponse';
+
+  /**
+   * Deserialize binary data to message
+   * @param instance message instance
+   */
+  static deserializeBinary(bytes: ByteSource) {
+    const instance = new EmptyResponse();
+    EmptyResponse.deserializeBinaryFromReader(
+      instance,
+      new BinaryReader(bytes)
+    );
+    return instance;
+  }
+
+  /**
+   * Check all the properties and set default protobuf values if necessary
+   * @param _instance message instance
+   */
+  static refineValues(_instance: EmptyResponse) {}
+
+  /**
+   * Deserializes / reads binary message into message instance using provided binary reader
+   * @param _instance message instance
+   * @param _reader binary reader instance
+   */
+  static deserializeBinaryFromReader(
+    _instance: EmptyResponse,
+    _reader: BinaryReader
+  ) {
+    while (_reader.nextField()) {
+      if (_reader.isEndGroup()) break;
+
+      switch (_reader.getFieldNumber()) {
+        default:
+          _reader.skipField();
+      }
+    }
+
+    EmptyResponse.refineValues(_instance);
+  }
+
+  /**
+   * Serializes a message to binary format using provided binary reader
+   * @param _instance message instance
+   * @param _writer binary writer instance
+   */
+  static serializeBinaryToWriter(
+    _instance: EmptyResponse,
+    _writer: BinaryWriter
+  ) {}
+
+  /**
+   * Message constructor. Initializes the properties and applies default Protobuf values if necessary
+   * @param _value initial values object or instance of EmptyResponse to deeply clone from
+   */
+  constructor(_value?: RecursivePartial<EmptyResponse.AsObject>) {
+    _value = _value || {};
+    EmptyResponse.refineValues(this);
+  }
+
+  /**
+   * Serialize message to binary data
+   * @param instance message instance
+   */
+  serializeBinary() {
+    const writer = new BinaryWriter();
+    EmptyResponse.serializeBinaryToWriter(this, writer);
+    return writer.getResultBuffer();
+  }
+
+  /**
+   * Cast message to standard JavaScript object (all non-primitive values are deeply cloned)
+   */
+  toObject(): EmptyResponse.AsObject {
+    return {};
+  }
+
+  /**
+   * Convenience method to support JSON.stringify(message), replicates the structure of toObject()
+   */
+  toJSON() {
+    return this.toObject();
+  }
+
+  /**
+   * Cast message to JSON using protobuf JSON notation: https://developers.google.com/protocol-buffers/docs/proto3#json
+   * Attention: output differs from toObject() e.g. enums are represented as names and not as numbers, Timestamp is an ISO Date string format etc.
+   * If the message itself or some of descendant messages is google.protobuf.Any, you MUST provide a message pool as options. If not, the messagePool is not required
+   */
+  toProtobufJSON(
+    // @ts-ignore
+    options?: ToProtobufJSONOptions
+  ): EmptyResponse.AsProtobufJSON {
+    return {};
+  }
+}
+export module EmptyResponse {
+  /**
+   * Standard JavaScript object representation for EmptyResponse
+   */
+  export interface AsObject {}
+
+  /**
+   * Protobuf JSON representation for EmptyResponse
+   */
+  export interface AsProtobufJSON {}
+}

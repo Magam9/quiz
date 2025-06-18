@@ -3,9 +3,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
+  inject,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -26,7 +24,7 @@ import { QuestionComponent } from '../question/question.component';
 import { GradeComponent } from '../grade/grade.component';
 import { generateRandomId } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
-import { Topic } from '../core/grpc/generated/quiz.pb';
+import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-injector';
 
 @Component({
   selector: 'app-topic',
@@ -44,10 +42,13 @@ import { Topic } from '../core/grpc/generated/quiz.pb';
     GradeComponent,
     MatSelectModule,
   ],
+  providers: [
+    provideDataAdapter(),
+  ],
   templateUrl: './topic.component.html',
   styleUrls: ['./topic.component.scss'],
 })
-export class TopicComponent implements OnInit, OnChanges {
+export class TopicComponent {
   @Input() data!: ITopic;
   @Output() saveData = new EventEmitter<ITopic>();
 
@@ -61,15 +62,7 @@ export class TopicComponent implements OnInit, OnChanges {
     grade: new FormControl<number|null>(null),
   });
 
-  ngOnInit() {
-    this.loadFromStorage();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['data'] && !changes['data'].firstChange) {
-      this.loadFromStorage();
-    }
-  }
+  private readonly dataAdapter = inject(DATA_ADAPTER);
 
   saveGrades(updated: ITopic['grades']) {
     this.data.grades = updated;
@@ -82,7 +75,9 @@ export class TopicComponent implements OnInit, OnChanges {
     this.questionForm.reset();
   }
 
-  saveQuestion() {
+  saveQuestion(event: Event) {
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     if (this.questionForm.invalid) {
       return;
     }
@@ -90,8 +85,8 @@ export class TopicComponent implements OnInit, OnChanges {
     const { question, answer, grade } =
       this.questionForm.value as {
         question: string;
-        answer:   string;
-        grade:    number;
+        answer: string;
+        grade: number;
       };
 
     this.data.questions.push({
@@ -117,6 +112,11 @@ export class TopicComponent implements OnInit, OnChanges {
     }
   }
 
+  cancelQuestion() {
+    this.questionForm.reset();
+    this.isInputDisplay = false;
+  }
+
   private resetQuestionForm() {
     this.question.reset();
     this.answer.reset();
@@ -124,18 +124,6 @@ export class TopicComponent implements OnInit, OnChanges {
   }
 
   private persist() {
-    localStorage.setItem(
-      `topic_${this.data.id}`,
-      JSON.stringify(this.data)
-    );
-  }
-
-  private loadFromStorage() {
-    const raw = localStorage.getItem(`topic_${this.data.id}`);
-    if (raw) {
-      try {
-        this.data = JSON.parse(raw);
-      } catch {}
-    }
+    this.dataAdapter.saveTopic(this.data);
   }
 }

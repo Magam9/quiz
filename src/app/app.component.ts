@@ -15,24 +15,6 @@ import { generateRandomId } from './helpers';
 
 import { IQuiz, ITopic } from './core/models';
 import { DATA_ADAPTER, provideDataAdapter } from './core/data/data-adapter-injector';
-import { LocalStorageDataAdapter } from './core/data/adapters/local-storage.adapter';
-import { RestDataAdapter } from './core/data/adapters/rest.adapter';
-import { GrpcDataAdapter } from './core/data/adapters/grpc.adapter';
-import { SocketDataAdapter } from './core/data/adapters/socket.adapter';
-import { environment } from '../../environment';
-
-export function selectAdapter() {
-  switch (environment.transport) {
-    case 'rest':
-      return RestDataAdapter; // not tested
-    case 'grpc':
-      return GrpcDataAdapter; // not tested
-    case 'socket':
-      return SocketDataAdapter; // not tested
-    default:
-      return LocalStorageDataAdapter; // tested
-  }
-}
 
 @Component({
   selector: 'app-root',
@@ -49,7 +31,7 @@ export function selectAdapter() {
     TopicComponent,
   ],
   providers: [
-    provideDataAdapter(selectAdapter()),
+    provideDataAdapter(),
   ],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
@@ -106,8 +88,8 @@ export class AppComponent implements OnInit {
 
   cleanAll() {
     this.data.topics = [];
-    localStorage.removeItem('quizbuilder_topics');
     this.isInputDisplay = false;
+    this.dataAdapter.cleanAll();
   }
 
   openSummaryDialog() {

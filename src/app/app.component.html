@@ -23,48 +23,82 @@
 </mat-toolbar>
 
 <section class="hero">
-  <div class="hero-copy">
-    <p class="eyebrow">Assessment Workspace</p>
-    <h1>Design thoughtful quizzes with confidence.</h1>
-    <p class="description">
-      Capture interview questions, structure guided follow-ups, and review performance with a single, elegant workspace.
-    </p>
-    <div class="hero-actions">
-      <button
-        mat-raised-button
-        color="accent"
-        (click)="addTopic()"
-        [disabled]="isInputDisplay"
-      >
-        <mat-icon>add_circle</mat-icon>
-        New Topic
-      </button>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="openSummaryDialog()"
-        [disabled]="!data.topics.length"
-      >
-        <mat-icon>play_arrow</mat-icon>
-        Review Topics
-      </button>
-    </div>
-  </div>
+  <div class="hero-blur hero-blur-left"></div>
+  <div class="hero-blur hero-blur-right"></div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Assessment Workspace</p>
+      <h1>Design thoughtful quizzes with confidence.</h1>
+      <p class="description">
+        Capture interview questions, structure guided follow-ups, and review performance with a single, elegant workspace.
+      </p>
 
-  <mat-card class="metrics-card">
-    <div class="metric">
-      <span class="metric-label">Topics</span>
-      <span class="metric-value">{{ totalTopics }}</span>
+      <div class="hero-badges">
+        <div class="badge">
+          <span class="badge-label">Workflow</span>
+          <strong>Guided scoring</strong>
+        </div>
+        <div class="badge">
+          <span class="badge-label">Collaboration</span>
+          <strong>Shareable topics</strong>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="addTopic()"
+          [disabled]="isInputDisplay"
+        >
+          <mat-icon>add_circle</mat-icon>
+          New Topic
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="openSummaryDialog()"
+          [disabled]="!data.topics.length"
+        >
+          <mat-icon>play_arrow</mat-icon>
+          Review Topics
+        </button>
+      </div>
     </div>
-    <div class="metric">
-      <span class="metric-label">Questions &amp; follow-ups</span>
-      <span class="metric-value">{{ totalQuestions }}</span>
-    </div>
-    <div class="metric">
-      <span class="metric-label">Ready for review</span>
-      <span class="metric-value">{{ data.topics.length ? 'Yes' : 'No' }}</span>
-    </div>
-  </mat-card>
+
+    <mat-card class="metrics-card">
+      <div class="metric">
+        <div class="metric-icon icon-topics">
+          <mat-icon>folder_open</mat-icon>
+        </div>
+        <div>
+          <span class="metric-label">Topics</span>
+          <span class="metric-value">{{ totalTopics }}</span>
+        </div>
+      </div>
+      <div class="metric">
+        <div class="metric-icon icon-questions">
+          <mat-icon>quiz</mat-icon>
+        </div>
+        <div>
+          <span class="metric-label">Questions &amp; follow-ups</span>
+          <span class="metric-value">{{ totalQuestions }}</span>
+        </div>
+      </div>
+      <div class="metric ready">
+        <div class="metric-icon icon-ready">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div>
+          <span class="metric-label">Ready for review</span>
+          <span class="metric-value">{{ data.topics.length ? 'Yes' : 'No' }}</span>
+        </div>
+      </div>
+      <div class="metric-footnote">
+        Updated {{ data.topics.length ? 'moments ago' : 'once topics exist' }}
+      </div>
+    </mat-card>
+  </div>
 </section>
 
 <section class="content">

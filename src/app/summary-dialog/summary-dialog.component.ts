@@ -5,6 +5,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 import { IQuestion, ITopic } from '../core/models';
 
@@ -17,7 +18,8 @@ import { IQuestion, ITopic } from '../core/models';
     MatButtonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   templateUrl: './summary-dialog.component.html',
   styleUrls: ['./summary-dialog.component.scss']
@@ -45,6 +47,13 @@ export class SummaryDialogComponent {
     this.currentIndex = 0;
     this.currentValueCtrl.setValue(this.flatQuestions[0]?.currentValue ?? null);
     this.setValidatorsForCurrentQuestion();
+  }
+
+  backToPicker() {
+    this.selectedTopic = null;
+    this.flatQuestions = [];
+    this.currentIndex = 0;
+    this.currentValueCtrl.reset();
   }
 
   flattenQuestions(questions: IQuestion[]): IQuestion[] {

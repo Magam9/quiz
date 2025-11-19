@@ -1,6 +1,25 @@
 .dialog-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-weight: 700;
   letter-spacing: 0.5px;
+
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: rgba(15, 23, 42, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 150ms ease, transform 150ms ease;
+
+    &:hover {
+      color: rgba(15, 23, 42, 0.85);
+      transform: scale(1.05);
+    }
+  }
 }
 
 .dialog-content {
@@ -42,9 +61,19 @@
   margin-bottom: 16px;
   font-size: 14px;
   color: rgba(17, 25, 54, 0.6);
+  gap: 16px;
+
+  button {
+    text-transform: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 }
 
 .progress-step {
+  display: block;
   font-weight: 600;
   color: #5568fe;
 }
@@ -111,7 +140,7 @@
   }
 
   button {
-    margin-top: 12px;
+    margin-top: 8px;
     text-transform: none;
   }
 }

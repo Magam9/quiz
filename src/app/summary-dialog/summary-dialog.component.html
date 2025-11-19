@@ -1,4 +1,9 @@
-<h2 mat-dialog-title class="dialog-title">Evaluate Topic</h2>
+<h2 mat-dialog-title class="dialog-title">
+  <span>Evaluate Topic</span>
+  <button mat-icon-button class="close-btn" aria-label="Close evaluation" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
 <mat-dialog-content class="dialog-content">
   <ng-container *ngIf="!selectedTopic">
     <div class="intro-card">
@@ -20,8 +25,14 @@
   <ng-container *ngIf="selectedTopic">
     <ng-container *ngIf="currentIndex < flatQuestions.length; else summary">
       <div class="progress">
-        <span class="progress-step">Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}</span>
-        <span class="progress-topic">{{ selectedTopic?.name }}</span>
+        <div>
+          <span class="progress-step">Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}</span>
+          <span class="progress-topic">{{ selectedTopic?.name }}</span>
+        </div>
+        <button mat-stroked-button color="accent" (click)="backToPicker()">
+          <mat-icon>arrow_back</mat-icon>
+          Change topic
+        </button>
       </div>
 
       <div class="question-preview">
@@ -81,6 +92,7 @@
         <h3>Topic complete</h3>
         <p>Total Score</p>
         <div class="score">{{ calculateScore() }}</div>
+        <button mat-flat-button color="accent" (click)="backToPicker()">Evaluate another</button>
         <button mat-stroked-button color="primary" (click)="close()">Close</button>
       </div>
     </ng-template>

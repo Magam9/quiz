@@ -1,13 +1,11 @@
-<mat-card class="question-card">
-  <div class="question-header">
+<mat-card class="question-card" [class.editing]="isEditing">
+  <div class="card-header">
     <div>
-      <span class="question-chip">Question</span>
+      <p class="eyebrow">Question</p>
       <h4>{{ data.question }}</h4>
     </div>
     <div class="header-actions">
-      <span class="sub-count">
-        {{ data.subQuestions.length || 0 }} follow-ups
-      </span>
+      <span class="sub-count">{{ data.subQuestions.length || 0 }} follow-ups</span>
       <button mat-icon-button class="edit-btn" (click)="startEdit()" aria-label="Edit question">
         <mat-icon>edit</mat-icon>
       </button>
@@ -16,8 +14,8 @@
 
   <div *ngIf="!isEditing; else editView" class="question-body">
     <div class="answer-block">
-      <span class="label">Answer Key</span>
-      <p>{{ data.answer }}</p>
+      <p class="label">Answer</p>
+      <p class="answer-text">{{ data.answer }}</p>
     </div>
 
     <div class="question-actions">
@@ -54,11 +52,11 @@
         <div class="sub-actions">
           <button
             mat-flat-button
-            color="accent"
+            color="primary"
             class="save-sub-btn"
             (click)="saveSubQuestion()"
             [disabled]="questionCtrl.invalid || answerCtrl.invalid">
-            Save follow-up
+            Save
           </button>
 
           <button
@@ -72,13 +70,15 @@
     }
 
     <div class="sub-questions" *ngIf="data.subQuestions.length">
-      <div class="sub-heading">Follow-up flow</div>
-      <div class="sub-question-list">
-        <app-question
-          *ngFor="let sub of data.subQuestions"
-          [data]="sub"
-          (saveData)="saveSubQuestionData($event)">
-        </app-question>
+      <div class="sub-heading">Follow-ups</div>
+      <div class="sub-timeline">
+        <div class="timeline-entry" *ngFor="let sub of data.subQuestions">
+          <div class="timeline-marker"></div>
+          <div class="timeline-card">
+            <p class="timeline-question">{{ sub.question }}</p>
+            <p class="timeline-answer">{{ sub.answer }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

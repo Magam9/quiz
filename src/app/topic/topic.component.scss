@@ -1,11 +1,24 @@
 .topic-card {
   margin-bottom: 16px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(244, 248, 255, 0.9), #ffffff);
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(244, 248, 255, 0.95), #ffffff);
   box-shadow: 0 25px 40px rgba(5, 14, 47, 0.08);
-  padding: 24px 28px;
+  padding: 26px 30px;
   position: relative;
   overflow: hidden;
+  border: 1px solid rgba(93, 104, 188, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(92, 106, 196, 0.2), transparent 65%);
+    pointer-events: none;
+  }
 }
 
 .topic-header {
@@ -53,19 +66,20 @@
 .topic-insights {
   margin: 16px 0 12px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
 
 .insight-card {
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(92, 106, 196, 0.15);
-  border-radius: 14px;
-  padding: 12px 16px;
+  border-radius: 18px;
+  padding: 14px 18px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   font-weight: 700;
+  backdrop-filter: blur(6px);
 
   .insight-label {
     font-size: 11px;

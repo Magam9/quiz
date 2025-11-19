@@ -77,11 +77,11 @@
             <div class="question-line">
               <strong>{{ sub.question }}</strong>
               <button
-                mat-button
-                color="primary"
-                class="link-btn"
-                (click)="startEditSubQuestion(sub)">
-                Edit
+                mat-icon-button
+                class="edit-btn"
+                (click)="startEditSubQuestion(sub)"
+                aria-label="Edit follow-up">
+                <mat-icon>edit</mat-icon>
               </button>
             </div>
             <p class="timeline-answer">{{ sub.answer }}</p>

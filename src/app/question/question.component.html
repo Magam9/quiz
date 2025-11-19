@@ -4,75 +4,120 @@
       <span class="question-chip">Question</span>
       <h4>{{ data.question }}</h4>
     </div>
-    <span class="sub-count">
-      {{ data.subQuestions.length || 0 }} follow-ups
-    </span>
+    <div class="header-actions">
+      <span class="sub-count">
+        {{ data.subQuestions.length || 0 }} follow-ups
+      </span>
+      <button mat-icon-button class="edit-btn" (click)="startEdit()" aria-label="Edit question">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
   </div>
 
-  <div class="answer-block">
-    <span class="label">Answer Key</span>
-    <p>{{ data.answer }}</p>
-  </div>
+  <div *ngIf="!isEditing; else editView" class="question-body">
+    <div class="answer-block">
+      <span class="label">Answer Key</span>
+      <p>{{ data.answer }}</p>
+    </div>
 
-  <div class="question-actions">
-    <button mat-stroked-button color="primary" (click)="addSubQuestion()">
-      <mat-icon>playlist_add</mat-icon>
-      Add follow-up
-    </button>
-  </div>
+    <div class="question-actions">
+      <button mat-stroked-button color="primary" (click)="addSubQuestion()">
+        <mat-icon>playlist_add</mat-icon>
+        Add follow-up
+      </button>
+    </div>
 
-  @if (isInputDisplay) {
-    <div class="sub-form">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Follow-up question</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          [formControl]="questionCtrl"
-          placeholder="Enter sub-question"
-        ></textarea>
-        <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
-      </mat-form-field>
+    @if (isInputDisplay) {
+      <div class="sub-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Follow-up question</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            [formControl]="questionCtrl"
+            placeholder="Enter sub-question"
+          ></textarea>
+          <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Expected response</mat-label>
-        <textarea
-          matInput
-          cdkTextareaAutosize
-          [formControl]="answerCtrl"
-          placeholder="Enter guidance or answer"
-        ></textarea>
-        <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Expected response</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            [formControl]="answerCtrl"
+            placeholder="Enter guidance or answer"
+          ></textarea>
+          <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
+        </mat-form-field>
 
-      <div class="sub-actions">
-        <button
-          mat-flat-button
-          color="accent"
-          class="save-sub-btn"
-          (click)="saveSubQuestion()"
-          [disabled]="questionCtrl.invalid || answerCtrl.invalid">
-          Save follow-up
-        </button>
+        <div class="sub-actions">
+          <button
+            mat-flat-button
+            color="accent"
+            class="save-sub-btn"
+            (click)="saveSubQuestion()"
+            [disabled]="questionCtrl.invalid || answerCtrl.invalid">
+            Save follow-up
+          </button>
 
-        <button
-          mat-stroked-button
-          class="cancel-sub-btn"
-          (click)="cancelSubQuestion()">
-          Cancel
-        </button>
+          <button
+            mat-stroked-button
+            class="cancel-sub-btn"
+            (click)="cancelSubQuestion()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    }
+
+    <div class="sub-questions" *ngIf="data.subQuestions.length">
+      <div class="sub-heading">Follow-up flow</div>
+      <div class="sub-question-list">
+        <app-question
+          *ngFor="let sub of data.subQuestions"
+          [data]="sub"
+          (saveData)="saveSubQuestionData($event)">
+        </app-question>
       </div>
     </div>
-  }
-
-  <div class="sub-questions" *ngIf="data.subQuestions.length">
-    <div class="sub-heading">Follow-up flow</div>
-    <div class="sub-question-list">
-      <app-question
-        *ngFor="let sub of data.subQuestions"
-        [data]="sub"
-        (saveData)="saveSubQuestionData($event)">
-      </app-question>
-    </div>
   </div>
+
+  <ng-template #editView>
+    <div class="edit-form">
+      <p class="eyebrow">Edit prompt</p>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Question</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          [formControl]="editQuestionCtrl"
+          placeholder="Update the question"
+        ></textarea>
+        <mat-error *ngIf="editQuestionCtrl.invalid">Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Answer</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          [formControl]="editAnswerCtrl"
+          placeholder="Update the reference answer"
+        ></textarea>
+        <mat-error *ngIf="editAnswerCtrl.invalid">Required</mat-error>
+      </mat-form-field>
+
+      <div class="edit-actions">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="saveEdit()"
+          [disabled]="editQuestionCtrl.invalid || editAnswerCtrl.invalid">
+          Save changes
+        </button>
+        <button mat-stroked-button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </ng-template>
 </mat-card>

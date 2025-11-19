@@ -34,9 +34,36 @@ export class QuestionComponent {
   isInputDisplay = false;
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  editQuestionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  editAnswerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  isEditing = false;
 
   addSubQuestion() {
     this.isInputDisplay = true;
+  }
+
+  startEdit() {
+    this.isEditing = true;
+    this.isInputDisplay = false;
+    this.questionCtrl.reset();
+    this.answerCtrl.reset();
+    this.editQuestionCtrl.setValue(this.data.question);
+    this.editAnswerCtrl.setValue(this.data.answer);
+  }
+
+  saveEdit() {
+    if (this.editQuestionCtrl.invalid || this.editAnswerCtrl.invalid) return;
+
+    this.data.question = this.editQuestionCtrl.value?.trim() ?? this.data.question;
+    this.data.answer = this.editAnswerCtrl.value?.trim() ?? this.data.answer;
+    this.isEditing = false;
+    this.saveData.emit(this.data);
+  }
+
+  cancelEdit() {
+    this.isEditing = false;
+    this.editQuestionCtrl.reset();
+    this.editAnswerCtrl.reset();
   }
 
   saveSubQuestion() {

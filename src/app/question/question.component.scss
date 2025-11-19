@@ -21,6 +21,26 @@
   }
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-btn {
+  color: rgba(17, 25, 54, 0.45);
+
+  &:hover {
+    color: rgba(17, 25, 54, 0.8);
+  }
+}
+
+.question-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .question-chip {
   font-size: 11px;
   text-transform: uppercase;
@@ -120,4 +140,28 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+.edit-form {
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 12px;
+
+  button {
+    text-transform: none;
+    font-weight: 600;
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  color: rgba(17, 25, 54, 0.6);
+  margin: 0;
 }

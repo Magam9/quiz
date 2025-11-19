@@ -104,7 +104,7 @@ export class AppComponent implements OnInit {
       maxHeight: '90vh',
       data: this.data.topics,
       autoFocus: false,
-      disableClose: true
+      disableClose: false
     });
   }
 

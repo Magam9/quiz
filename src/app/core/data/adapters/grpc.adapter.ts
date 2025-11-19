@@ -11,11 +11,10 @@ import {
   SaveCurrentValueRequest,
   Topic,
   Question,
-  Grade,
   EmptyRequest,
 } from '../../grpc/generated/quiz.pb';
 
-import { ITopic, IQuestion, IGrade } from '../../models';
+import { ITopic, IQuestion } from '../../models';
 
 @Injectable()
 export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
@@ -63,15 +62,7 @@ export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     new Topic({
       id: topic.id,
       name: topic.name,
-      grades: topic.grades.map(this.toProtoGrade),
       questions: topic.questions.map(this.toProtoQuestion),
-    });
-
-  private toProtoGrade = (g: IGrade): Grade =>
-    new Grade({
-      gradeName: g.gradeName,
-      value: g.value,
-      position: g.position,
     });
 
   private toProtoQuestion = (question: IQuestion): Question =>
@@ -80,21 +71,13 @@ export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
       question: question.question,
       answer: question.answer,
       currentValue: question.currentValue ?? 0,
-      grade: question.grade ?? 0,
       subQuestions: question.subQuestions?.map(this.toProtoQuestion) ?? [],
     });
 
   private fromProtoTopic = (topic: Topic): ITopic => ({
     id: topic.id,
     name: topic.name,
-    grades: topic.grades?.map(this.fromProtoGrade) ?? [],
     questions: topic.questions?.map(this.fromProtoQuestion) ?? [],
-  });
-
-  private fromProtoGrade = (g: Grade): IGrade => ({
-    gradeName: g.gradeName,
-    value: g.value,
-    position: g.position,
   });
 
   private fromProtoQuestion = (question: Question): IQuestion => ({
@@ -102,7 +85,6 @@ export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     question: question.question,
     answer: question.answer,
     currentValue: question.currentValue,
-    grade: question.grade,
     subQuestions: question.subQuestions?.map(this.fromProtoQuestion) ?? [],
   });
 }

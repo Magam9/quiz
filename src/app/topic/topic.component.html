@@ -16,10 +16,6 @@
     </mat-card-actions>
   </mat-card-header>
 
-  <app-grade
-    [grades]="data.grades"
-    (gradesChange)="saveGrades($event)"
-  ></app-grade>
   <mat-card-content *ngIf="isInputDisplay" class="question-form">
     <form [formGroup]="questionForm">
       <mat-form-field appearance="outline" class="full-width">
@@ -44,18 +40,6 @@
         <mat-error *ngIf="questionForm.get('answer')?.invalid">
           Answer is required
         </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Grade</mat-label>
-        <mat-select formControlName="grade">
-          <mat-option
-            *ngFor="let g of data.grades"
-            [value]="g.position"
-          >
-            {{ g.gradeName }} ({{ g.value }})
-          </mat-option>
-        </mat-select>
       </mat-form-field>
 
       <div class="form-actions">
@@ -87,7 +71,6 @@
     <app-question
       *ngFor="let q of data.questions"
       [data]="q"
-      [grades]="data.grades"
       (saveData)="saveQuestionData($event)"
     ></app-question>
   </mat-card-content>

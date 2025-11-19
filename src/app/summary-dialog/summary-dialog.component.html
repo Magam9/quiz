@@ -41,9 +41,9 @@
           </mat-error>
         }
         
-        @if (currentGradeValue && currentValueCtrl.hasError('max')) {
+        @if (currentValueCtrl.hasError('max')) {
           <mat-error>
-            Value exceeds the maximum grade ({{ currentGradeValue }}).
+            Value must be {{ maxQuestionValue }} or less.
           </mat-error>
         }
       </mat-form-field>

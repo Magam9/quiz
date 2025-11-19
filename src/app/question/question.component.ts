@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -7,8 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { generateRandomId } from '../helpers';
-import { MatSelectModule } from '@angular/material/select';
-import { IGrade, IQuestion } from '../core/models';
+import { IQuestion } from '../core/models';
 
 @Component({
   selector: 'app-question',
@@ -21,34 +20,18 @@ import { IGrade, IQuestion } from '../core/models';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule,
   ],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
 })
-export class QuestionComponent implements OnInit {
+export class QuestionComponent {
   @Input() data!: IQuestion;
   @Output() saveData = new EventEmitter<IQuestion>();
-  @Input() grades: IGrade[] = [];
 
 
   isInputDisplay = false;
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
-  gradeCtrl = new FormControl<number|null>(null, [Validators.required]);
-  subGradeCtrl = new FormControl<number | null>(null);
-
-  ngOnInit() {
-    if (this.data?.grade) {
-      this.gradeCtrl.setValue(this.data?.grade);
-    }
-    this.gradeCtrl.valueChanges.subscribe((grade) => {
-      if (grade != null) {
-        this.data.grade = grade;
-        this.saveData.emit(this.data);
-      }
-    });
-  }
 
   addSubQuestion() {
     this.isInputDisplay = true;
@@ -57,7 +40,6 @@ export class QuestionComponent implements OnInit {
   saveSubQuestion() {
     if (this.questionCtrl.invalid || this.answerCtrl.invalid) return;
 
-    const gradeValue = this.subGradeCtrl.value;
     const newSubQuestion: IQuestion = {
       id: generateRandomId('subq'),
       question: this.questionCtrl.value!,
@@ -66,14 +48,9 @@ export class QuestionComponent implements OnInit {
       currentValue: 0,
     };
 
-    if (gradeValue != null) {
-      newSubQuestion.grade = gradeValue;
-    }
-
     this.data.subQuestions.push(newSubQuestion);
     this.questionCtrl.reset();
     this.answerCtrl.reset();
-    this.subGradeCtrl.reset();
     this.isInputDisplay = false;
     this.saveData.emit(this.data);
   }
@@ -89,7 +66,6 @@ export class QuestionComponent implements OnInit {
   cancelSubQuestion() {
     this.questionCtrl.reset();
     this.answerCtrl.reset();
-    this.subGradeCtrl.reset();
 
     this.isInputDisplay = false;
   }

@@ -67,7 +67,6 @@ export class AppComponent implements OnInit {
       id: generateRandomId('topic'),
       name: this.topic.value as string,
       questions: [],
-      grades: [],
     };
 
     this.dataAdapter.saveTopic(newTopic).subscribe(() => {

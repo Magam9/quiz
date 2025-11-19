@@ -26,11 +26,12 @@ export class SummaryDialogComponent {
   selectedTopic: ITopic | null = null;
   flatQuestions: IQuestion[] = [];
   currentIndex = 0;
-  currentGradeValue: number | null = null;
+  readonly maxQuestionValue = 100;
 
   currentValueCtrl = new FormControl<number | null>(null, [
     Validators.required,
-    Validators.min(0)
+    Validators.min(0),
+    Validators.max(this.maxQuestionValue),
   ]);
 
   constructor(
@@ -76,25 +77,20 @@ export class SummaryDialogComponent {
         this.flatQuestions[this.currentIndex]?.currentValue ?? null
       );
     }
-    this,this.setValidatorsForCurrentQuestion();
+    this.setValidatorsForCurrentQuestion();
   }
 
   setValidatorsForCurrentQuestion() {
-    this.currentGradeValue = null;
     const current = this.flatQuestions[this.currentIndex];
     if (!current) {
       return;
     }
 
-    const validators = [Validators.required, Validators.min(0)];
-
-    if (typeof current.grade === 'number' && current.grade > 0) {
-      const grade = this.selectedTopic?.grades.at(current.grade);
-      if (grade?.value) {
-        this.currentGradeValue = grade.value;
-        validators.push(Validators.max(grade?.value));
-      }
-    }
+    const validators = [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(this.maxQuestionValue),
+    ];
 
     this.currentValueCtrl.setValidators(validators);
     this.currentValueCtrl.updateValueAndValidity();

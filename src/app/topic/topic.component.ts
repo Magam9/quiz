@@ -18,10 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatSelectModule } from '@angular/material/select';
-
 import { QuestionComponent } from '../question/question.component';
-import { GradeComponent } from '../grade/grade.component';
 import { generateRandomId } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
 import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-injector';
@@ -39,8 +36,6 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
     MatInputModule,
     MatDividerModule,
     QuestionComponent,
-    GradeComponent,
-    MatSelectModule,
   ],
   providers: [
     provideDataAdapter(),
@@ -59,16 +54,9 @@ export class TopicComponent {
   questionForm = new FormGroup({
     question: new FormControl('', [Validators.required]),
     answer: new FormControl('', [Validators.required]),
-    grade: new FormControl<number|null>(null),
   });
 
   private readonly dataAdapter = inject(DATA_ADAPTER);
-
-  saveGrades(updated: ITopic['grades']) {
-    this.data.grades = updated;
-    this.persist();
-    this.saveData.emit(this.data);
-  }
 
   addQuestion() {
     this.isInputDisplay = true;
@@ -82,18 +70,16 @@ export class TopicComponent {
       return;
     }
 
-    const { question, answer, grade } =
+    const { question, answer } =
       this.questionForm.value as {
         question: string;
         answer: string;
-        grade: number;
       };
 
     this.data.questions.push({
       id: generateRandomId('question'),
       question,
       answer,
-      grade,
       subQuestions: [],
       currentValue: 0,
     });

@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   inject,
 } from '@angular/core';
@@ -19,6 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { QuestionComponent } from '../question/question.component';
 import { generateRandomId } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
@@ -37,6 +40,7 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
     MatInputModule,
     MatDividerModule,
     TextFieldModule,
+    MatGridListModule,
     QuestionComponent,
   ],
   providers: [
@@ -45,7 +49,7 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
   templateUrl: './topic.component.html',
   styleUrls: ['./topic.component.scss'],
 })
-export class TopicComponent {
+export class TopicComponent implements OnInit {
   @Input() data!: ITopic;
   @Output() saveData = new EventEmitter<ITopic>();
 
@@ -58,7 +62,31 @@ export class TopicComponent {
     answer: new FormControl('', [Validators.required]),
   });
 
+  gridCols = 3;
+
   private readonly dataAdapter = inject(DATA_ADAPTER);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
+      .subscribe((state) => {
+        if (state.breakpoints[Breakpoints.XSmall] || state.breakpoints[Breakpoints.Small]) {
+          this.gridCols = 1;
+        } else if (state.breakpoints[Breakpoints.Medium]) {
+          this.gridCols = 2;
+        } else {
+          this.gridCols = 3;
+        }
+      });
+  }
+
+  get totalFollowUps(): number {
+    return this.data.questions.reduce(
+      (acc, q) => acc + (q.subQuestions ? q.subQuestions.length : 0),
+      0
+    );
+  }
 
   addQuestion() {
     this.isInputDisplay = true;

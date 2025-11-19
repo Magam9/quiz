@@ -18,6 +18,21 @@
     </div>
   </div>
 
+  <div class="topic-insights">
+    <div class="insight-card">
+      <span class="insight-label">Total prompts</span>
+      <strong>{{ data.questions.length }}</strong>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Follow-up depth</span>
+      <strong>{{ totalFollowUps }}</strong>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Last updated</span>
+      <strong>moments ago</strong>
+    </div>
+  </div>
+
   <mat-divider></mat-divider>
 
   <div *ngIf="isInputDisplay" class="question-form">
@@ -70,14 +85,34 @@
   </div>
 
   <div
-    class="questions-list"
+    class="questions-wrapper"
     *ngIf="data.questions?.length; else emptyQuestions"
   >
-    <app-question
-      *ngFor="let q of data.questions"
-      [data]="q"
-      (saveData)="saveQuestionData($event)"
-    ></app-question>
+    <div class="questions-headline">
+      <div>
+        <p class="eyebrow">Question bank</p>
+        <h4>Preview and refine each prompt</h4>
+      </div>
+    </div>
+
+    <mat-grid-list
+      class="question-grid"
+      [cols]="gridCols"
+      rowHeight="420px"
+      gutterSize="18"
+    >
+      <mat-grid-tile
+        *ngFor="let q of data.questions"
+        class="question-grid-tile"
+      >
+        <div class="question-tile">
+          <app-question
+            [data]="q"
+            (saveData)="saveQuestionData($event)"
+          ></app-question>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
 
   <ng-template #emptyQuestions>

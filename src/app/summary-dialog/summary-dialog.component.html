@@ -1,34 +1,49 @@
-<h2 mat-dialog-title>Evaluate Topic</h2>
-<mat-dialog-content>
+<h2 mat-dialog-title class="dialog-title">Evaluate Topic</h2>
+<mat-dialog-content class="dialog-content">
   <ng-container *ngIf="!selectedTopic">
-    <p>Select a topic to begin:</p>
-    <div class="topic-list">
-      <button
-        mat-stroked-button
-        *ngFor="let topic of topics"
-        (click)="selectTopic(topic)">
-        {{ topic.name }}
-      </button>
+    <div class="intro-card">
+      <h3>Select a topic to begin</h3>
+      <p>Choose the topic you would like to evaluate. You can always return and try a different area.</p>
+      <div class="topic-list">
+        <button
+          mat-stroked-button
+          color="primary"
+          class="topic-pill"
+          *ngFor="let topic of topics"
+          (click)="selectTopic(topic)">
+          {{ topic.name }}
+        </button>
+      </div>
     </div>
   </ng-container>
 
   <ng-container *ngIf="selectedTopic">
     <ng-container *ngIf="currentIndex < flatQuestions.length; else summary">
-      <p class="question-counter">
-        Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}
-      </p>
-      <p><strong>Q:</strong> {{ flatQuestions[currentIndex].question }}</p>
-      <p><strong>A:</strong> {{ flatQuestions[currentIndex].answer }}</p>
+      <div class="progress">
+        <span class="progress-step">Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}</span>
+        <span class="progress-topic">{{ selectedTopic?.name }}</span>
+      </div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Current Value</mat-label>
+      <div class="question-preview">
+        <div>
+          <p class="label">Prompt</p>
+          <p class="value">{{ flatQuestions[currentIndex].question }}</p>
+        </div>
+        <div>
+          <p class="label">Reference answer</p>
+          <p class="value">{{ flatQuestions[currentIndex].answer }}</p>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width value-field">
+        <mat-label>Score (0 - {{ maxQuestionValue }})</mat-label>
         <input
           matInput
           type="number"
           [formControl]="currentValueCtrl"
           placeholder="Enter value"
         />
-        
+
         @if (currentValueCtrl.hasError('required')) {
           <mat-error>
             Value is required.
@@ -40,7 +55,7 @@
             Value must be 0 or greater.
           </mat-error>
         }
-        
+
         @if (currentValueCtrl.hasError('max')) {
           <mat-error>
             Value must be {{ maxQuestionValue }} or less.
@@ -48,20 +63,26 @@
         }
       </mat-form-field>
 
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="goNext()"
-        [disabled]="currentValueCtrl.invalid"
-      >
-        {{ currentIndex + 1 < flatQuestions.length ? 'Next' : 'Finish' }}
-      </button>
+      <div class="dialog-actions">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="goNext()"
+          [disabled]="currentValueCtrl.invalid"
+        >
+          {{ currentIndex + 1 < flatQuestions.length ? 'Next question' : 'Finish review' }}
+        </button>
+      </div>
     </ng-container>
 
     <ng-template #summary>
-      <h3>✅ Topic Completed</h3>
-      <p>Total Score: <strong>{{ calculateScore() }}</strong></p>
-      <button mat-stroked-button color="primary" (click)="close()">Close</button>
+      <div class="summary-card">
+        <div class="emoji">🎉</div>
+        <h3>Topic complete</h3>
+        <p>Total Score</p>
+        <div class="score">{{ calculateScore() }}</div>
+        <button mat-stroked-button color="primary" (click)="close()">Close</button>
+      </div>
     </ng-template>
   </ng-container>
 </mat-dialog-content>

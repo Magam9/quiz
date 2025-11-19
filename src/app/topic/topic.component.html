@@ -1,42 +1,48 @@
 <mat-card class="topic-card">
-  <mat-card-header>
-    <mat-card-title class="topic-title">
-      {{ data.name }}
-    </mat-card-title>
-    <mat-card-actions align="end">
+  <div class="topic-header">
+    <div class="topic-meta">
+      <span class="topic-chip">Topic</span>
+      <h3>{{ data.name }}</h3>
+      <span class="topic-subtitle">{{ data.questions.length || 0 }} questions curated</span>
+    </div>
+    <div class="topic-actions">
       <button
-        mat-button
-        color="primary"
+        mat-flat-button
+        color="accent"
         class="add-question-btn"
         (click)="addQuestion()"
       >
-        Add Question
-        <mat-icon>chevron_right</mat-icon>
+        <mat-icon>note_add</mat-icon>
+        Add question
       </button>
-    </mat-card-actions>
-  </mat-card-header>
+    </div>
+  </div>
 
-  <mat-card-content *ngIf="isInputDisplay" class="question-form">
+  <mat-divider></mat-divider>
+
+  <div *ngIf="isInputDisplay" class="question-form">
     <form [formGroup]="questionForm">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Question</mat-label>
-        <input
+        <textarea
           matInput
+          cdkTextareaAutosize
           formControlName="question"
-          placeholder="Enter new question"
-        />
+          placeholder="Enter the primary interview question"
+        ></textarea>
         <mat-error *ngIf="questionForm.get('question')?.invalid">
           Question is required
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Answer</mat-label>
-        <input
+        <mat-label>Model answer</mat-label>
+        <textarea
           matInput
+          cdkTextareaAutosize
           formControlName="answer"
-          placeholder="Enter answer"
-        />
+          placeholder="Add expected answer or hints"
+        ></textarea>
         <mat-error *ngIf="questionForm.get('answer')?.invalid">
           Answer is required
         </mat-error>
@@ -45,16 +51,15 @@
       <div class="form-actions">
         <button
           mat-flat-button
-          color="accent"
+          color="primary"
           (click)="saveQuestion($event)"
           [disabled]="questionForm.invalid"
           class="save-question-btn">
-          Save
+          Save question
         </button>
 
         <button
           mat-stroked-button
-          color="warn"
           type="button"
           (click)="cancelQuestion()"
           class="cancel-question-btn">
@@ -62,16 +67,23 @@
         </button>
       </div>
     </form>
-  </mat-card-content>
+  </div>
 
-  <mat-card-content
+  <div
     class="questions-list"
-    *ngIf="data.questions?.length"
+    *ngIf="data.questions?.length; else emptyQuestions"
   >
     <app-question
       *ngFor="let q of data.questions"
       [data]="q"
       (saveData)="saveQuestionData($event)"
     ></app-question>
-  </mat-card-content>
+  </div>
+
+  <ng-template #emptyQuestions>
+    <div class="empty-questions">
+      <mat-icon>lightbulb</mat-icon>
+      <p>No questions yet. Add your first one to define this topic.</p>
+    </div>
+  </ng-template>
 </mat-card>

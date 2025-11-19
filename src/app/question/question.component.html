@@ -1,39 +1,47 @@
 <mat-card class="question-card">
-  <div class="qa-content">
-    <div class="qa-row">
-      <span class="label">Q:</span>
-      <span class="text">{{ data.question }}</span>
+  <div class="question-header">
+    <div>
+      <span class="question-chip">Question</span>
+      <h4>{{ data.question }}</h4>
     </div>
-    <div class="qa-row">
-      <span class="label">A:</span>
-      <span class="text">{{ data.answer }}</span>
-    </div>
+    <span class="sub-count">
+      {{ data.subQuestions.length || 0 }} follow-ups
+    </span>
   </div>
 
-  <mat-card-actions align="start" class="add-subaction">
-    <button mat-stroked-button color="primary" class="add-sub-btn" (click)="addSubQuestion()">
-      <mat-icon>add</mat-icon>
-      Add Sub-question
+  <div class="answer-block">
+    <span class="label">Answer Key</span>
+    <p>{{ data.answer }}</p>
+  </div>
+
+  <div class="question-actions">
+    <button mat-stroked-button color="primary" (click)="addSubQuestion()">
+      <mat-icon>playlist_add</mat-icon>
+      Add follow-up
     </button>
-  </mat-card-actions>
+  </div>
 
   @if (isInputDisplay) {
     <div class="sub-form">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Sub-question</mat-label>
-        <input
+        <mat-label>Follow-up question</mat-label>
+        <textarea
           matInput
+          cdkTextareaAutosize
           [formControl]="questionCtrl"
-          placeholder="Enter sub-question" />
+          placeholder="Enter sub-question"
+        ></textarea>
         <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Answer</mat-label>
-        <input
+        <mat-label>Expected response</mat-label>
+        <textarea
           matInput
+          cdkTextareaAutosize
           [formControl]="answerCtrl"
-          placeholder="Enter answer" />
+          placeholder="Enter guidance or answer"
+        ></textarea>
         <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
       </mat-form-field>
 
@@ -44,12 +52,11 @@
           class="save-sub-btn"
           (click)="saveSubQuestion()"
           [disabled]="questionCtrl.invalid || answerCtrl.invalid">
-          Save
+          Save follow-up
         </button>
 
         <button
           mat-stroked-button
-          color="warn"
           class="cancel-sub-btn"
           (click)="cancelSubQuestion()">
           Cancel
@@ -59,10 +66,13 @@
   }
 
   <div class="sub-questions" *ngIf="data.subQuestions.length">
-    <app-question
-      *ngFor="let sub of data.subQuestions"
-      [data]="sub"
-      (saveData)="saveSubQuestionData($event)">
-    </app-question>
+    <div class="sub-heading">Follow-up flow</div>
+    <div class="sub-question-list">
+      <app-question
+        *ngFor="let sub of data.subQuestions"
+        [data]="sub"
+        (saveData)="saveSubQuestionData($event)">
+      </app-question>
+    </div>
   </div>
 </mat-card>

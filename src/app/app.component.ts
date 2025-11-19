@@ -8,12 +8,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDialog } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 import { TopicComponent } from './topic/topic.component';
 import { SummaryDialogComponent } from './summary-dialog/summary-dialog.component';
 import { generateRandomId } from './helpers';
 
-import { IQuiz, ITopic } from './core/models';
+import { IQuiz, ITopic, IQuestion } from './core/models';
 import { DATA_ADAPTER, provideDataAdapter } from './core/data/data-adapter-injector';
 
 @Component({
@@ -28,6 +29,7 @@ import { DATA_ADAPTER, provideDataAdapter } from './core/data/data-adapter-injec
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
+    MatCardModule,
     TopicComponent,
   ],
   providers: [
@@ -58,6 +60,11 @@ export class AppComponent implements OnInit {
 
   addTopic() {
     this.isInputDisplay = true;
+  }
+
+  cancelNewTopic() {
+    this.topic.reset();
+    this.isInputDisplay = false;
   }
 
   saveTopic() {
@@ -99,5 +106,25 @@ export class AppComponent implements OnInit {
       autoFocus: false,
       disableClose: true
     });
+  }
+
+  get totalTopics(): number {
+    return this.data.topics.length;
+  }
+
+  get totalQuestions(): number {
+    return this.data.topics.reduce(
+      (acc, topic) => acc + this.countQuestions(topic.questions),
+      0
+    );
+  }
+
+  private countQuestions(questions: IQuestion[]): number {
+    return questions.reduce((acc, question) => {
+      const nested = question.subQuestions?.length
+        ? this.countQuestions(question.subQuestions)
+        : 0;
+      return acc + 1 + nested;
+    }, 0);
   }
 }

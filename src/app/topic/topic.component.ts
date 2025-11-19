@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { QuestionComponent } from '../question/question.component';
 import { generateRandomId } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
@@ -35,6 +36,7 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
+    TextFieldModule,
     QuestionComponent,
   ],
   providers: [

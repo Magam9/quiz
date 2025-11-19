@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TextFieldModule } from '@angular/cdk/text-field';
 import { generateRandomId } from '../helpers';
 import { IQuestion } from '../core/models';
 
@@ -20,6 +21,7 @@ import { IQuestion } from '../core/models';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    TextFieldModule,
   ],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],

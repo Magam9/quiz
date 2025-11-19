@@ -1,66 +1,95 @@
 .topic-card {
   margin-bottom: 16px;
-  border-radius: 8px;
-  background-color: #ffffff;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(244, 248, 255, 0.9), #ffffff);
+  box-shadow: 0 25px 40px rgba(5, 14, 47, 0.08);
+  padding: 24px 28px;
 }
 
-mat-card-header {
+.topic-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding-bottom: 0;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.topic-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #212121;
-  text-transform: capitalize;
+.topic-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111936;
+  }
 }
 
-.add-question-btn {
-  color: #282828;
-  font-weight: 500;
+.topic-chip {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #5c6ac4;
+}
+
+.topic-subtitle {
+  font-size: 14px;
+  color: rgba(14, 22, 61, 0.6);
+}
+
+.topic-actions button {
   text-transform: none;
+  font-weight: 600;
 
   mat-icon {
-    font-size: 20px;
-    margin-left: 4px;
+    margin-right: 6px;
   }
 }
 
 .question-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 16px;
+  gap: 16px;
+  margin: 20px 0;
 }
 
 .full-width {
   width: 100%;
 }
 
-.save-question-btn {
-  background-color: #7b1fa2;
-  color: #ffffff;
-  text-transform: none;
-  align-self: flex-start;
-}
-
 .questions-list {
-  margin-top: 20px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.cancel-question-btn {
-  text-transform: none;
-}
-
 .form-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
+
+  button {
+    text-transform: none;
+    font-weight: 600;
+  }
+}
+
+.empty-questions {
+  border-radius: 12px;
+  border: 1px dashed rgba(92, 106, 196, 0.4);
+  padding: 18px;
+  text-align: center;
+  color: rgba(14, 22, 61, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  mat-icon {
+    color: #ffb84d;
+    font-size: 24px;
+    margin: 0 auto;
+  }
 }

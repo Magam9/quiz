@@ -1,57 +1,131 @@
-<mat-toolbar color="primary" class="main-toolbar">
-  <span class="app-title">Quizario</span>
-</mat-toolbar>
-
-<div class="app-container">
-  <div *ngIf="isInputDisplay" class="new-topic-wrapper">
-    <mat-form-field appearance="outline" class="new-topic-field">
-      <mat-label>New Topic</mat-label>
-      <input matInput [formControl]="topic" placeholder="Enter topic name" />
-      <mat-error *ngIf="topic.invalid">Topic is required</mat-error>
-    </mat-form-field>
-
+<mat-toolbar class="main-toolbar">
+  <div class="toolbar-content">
+    <div class="brand">
+      <span class="brand-title">Quizario</span>
+      <span class="brand-subtitle">Evaluation Studio</span>
+    </div>
+    <span class="spacer"></span>
+    <button mat-stroked-button color="accent" class="toolbar-btn" (click)="cleanAll()">
+      <mat-icon>delete_sweep</mat-icon>
+      Reset Workspace
+    </button>
     <button
-      mat-raised-button
+      mat-flat-button
       color="primary"
-      (click)="saveTopic()"
-      [disabled]="topic.invalid"
-      class="save-topic-btn">
-      Save Topic
-    </button>
-  </div>
-
-  <div class="toolbar-actions">
-    <button mat-flat-button color="accent" (click)="addTopic()" class="add-topic-btn">
-      <mat-icon>add</mat-icon>
-      Add Topic
-    </button>
-    <button mat-stroked-button color="warn" (click)="cleanAll()">
-      <mat-icon>delete</mat-icon>
-      Clear All
-    </button>
-  </div>
-
-  <div class="run-summary">
-    <button
-      mat-raised-button
-      color="primary"
+      class="toolbar-btn"
       (click)="openSummaryDialog()"
       [disabled]="!data.topics.length"
     >
-      <mat-icon>play_arrow</mat-icon>
-      Run Summary
+      <mat-icon>insights</mat-icon>
+      Launch Evaluation
     </button>
   </div>
+</mat-toolbar>
 
-  <mat-accordion class="topic-accordion">
-    <mat-expansion-panel *ngFor="let topic of data?.topics">
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Assessment Workspace</p>
+    <h1>Design thoughtful quizzes with confidence.</h1>
+    <p class="description">
+      Capture interview questions, structure guided follow-ups, and review performance with a single, elegant workspace.
+    </p>
+    <div class="hero-actions">
+      <button
+        mat-raised-button
+        color="accent"
+        (click)="addTopic()"
+        [disabled]="isInputDisplay"
+      >
+        <mat-icon>add_circle</mat-icon>
+        New Topic
+      </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="openSummaryDialog()"
+        [disabled]="!data.topics.length"
+      >
+        <mat-icon>play_arrow</mat-icon>
+        Review Topics
+      </button>
+    </div>
+  </div>
+
+  <mat-card class="metrics-card">
+    <div class="metric">
+      <span class="metric-label">Topics</span>
+      <span class="metric-value">{{ totalTopics }}</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Questions &amp; follow-ups</span>
+      <span class="metric-value">{{ totalQuestions }}</span>
+    </div>
+    <div class="metric">
+      <span class="metric-label">Ready for review</span>
+      <span class="metric-value">{{ data.topics.length ? 'Yes' : 'No' }}</span>
+    </div>
+  </mat-card>
+</section>
+
+<section class="content">
+  <mat-card class="new-topic-card" *ngIf="isInputDisplay">
+    <div class="new-topic-header">
+      <div>
+        <p class="eyebrow">Create topic</p>
+        <h2>Add a new area of focus</h2>
+      </div>
+      <button mat-icon-button (click)="cancelNewTopic()" aria-label="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <form class="new-topic-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Topic name</mat-label>
+        <input matInput [formControl]="topic" placeholder="e.g. System Design" />
+        <mat-error *ngIf="topic.invalid">Topic name is required</mat-error>
+      </mat-form-field>
+
+      <div class="new-topic-actions">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="saveTopic()"
+          [disabled]="topic.invalid"
+        >
+          Save Topic
+        </button>
+        <button mat-stroked-button type="button" (click)="cancelNewTopic()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <div class="empty-state" *ngIf="!data.topics.length">
+    <div class="empty-icon">
+      <mat-icon>sticky_note_2</mat-icon>
+    </div>
+    <h3>No topics yet</h3>
+    <p>Create your first topic to start building the quiz experience.</p>
+    <button mat-flat-button color="accent" (click)="addTopic()">Start a topic</button>
+  </div>
+
+  <mat-accordion class="topic-accordion" *ngIf="data.topics.length">
+    <mat-expansion-panel *ngFor="let topic of data?.topics" class="topic-panel" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          {{ topic.name }}
+          <div class="panel-title">
+            <span class="topic-name">{{ topic.name }}</span>
+            <span class="topic-count">{{ topic.questions.length }} questions</span>
+          </div>
         </mat-panel-title>
+        <mat-panel-description>
+          <span class="panel-pill">Manage</span>
+        </mat-panel-description>
       </mat-expansion-panel-header>
 
       <app-topic [data]="topic" (saveData)="saveTopicData($event)"></app-topic>
     </mat-expansion-panel>
   </mat-accordion>
-</div>
+</section>

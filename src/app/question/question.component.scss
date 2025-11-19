@@ -117,24 +117,52 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding-left: 8px;
-  border-left: 2px solid rgba(91, 107, 255, 0.2);
 }
 
 .timeline-entry {
+  border-left: 2px solid rgba(91, 107, 255, 0.2);
+  padding-left: 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
-.timeline-question {
+.timeline-question .question-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeline-question strong {
   font-weight: 600;
-  margin: 0;
+}
+
+.link-btn {
+  padding: 0;
+  min-width: unset;
 }
 
 .timeline-answer {
   margin: 0;
   color: rgba(16, 22, 58, 0.8);
+}
+
+.sub-edit {
+  border: 1px solid rgba(91, 107, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sub-edit-actions {
+  display: flex;
+  gap: 8px;
+
+  button {
+    text-transform: none;
+  }
 }
 
 .edit-form {

@@ -37,6 +37,9 @@ export class QuestionComponent {
   editQuestionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   editAnswerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   isEditing = false;
+  editSubQuestionId: string | null = null;
+  editSubQuestionQuestionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
+  editSubQuestionAnswerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
 
   addSubQuestion() {
     this.isInputDisplay = true;
@@ -64,6 +67,39 @@ export class QuestionComponent {
     this.isEditing = false;
     this.editQuestionCtrl.reset();
     this.editAnswerCtrl.reset();
+  }
+
+  startEditSubQuestion(sub: IQuestion) {
+    this.editSubQuestionId = sub.id;
+    this.editSubQuestionQuestionCtrl.setValue(sub.question);
+    this.editSubQuestionAnswerCtrl.setValue(sub.answer);
+  }
+
+  saveEditSubQuestion() {
+    if (
+      !this.editSubQuestionId ||
+      this.editSubQuestionQuestionCtrl.invalid ||
+      this.editSubQuestionAnswerCtrl.invalid
+    ) {
+      return;
+    }
+
+    const idx = this.data.subQuestions.findIndex((s) => s.id === this.editSubQuestionId);
+    if (idx > -1) {
+      this.data.subQuestions[idx].question =
+        this.editSubQuestionQuestionCtrl.value?.trim() ?? this.data.subQuestions[idx].question;
+      this.data.subQuestions[idx].answer =
+        this.editSubQuestionAnswerCtrl.value?.trim() ?? this.data.subQuestions[idx].answer;
+      this.saveData.emit(this.data);
+    }
+
+    this.cancelEditSubQuestion();
+  }
+
+  cancelEditSubQuestion() {
+    this.editSubQuestionId = null;
+    this.editSubQuestionQuestionCtrl.reset();
+    this.editSubQuestionAnswerCtrl.reset();
   }
 
   saveSubQuestion() {

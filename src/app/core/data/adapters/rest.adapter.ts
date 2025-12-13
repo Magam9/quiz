@@ -19,6 +19,10 @@ export class RestDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     return this.http.post<void>(`${this.api}/topics`, topic);
   }
 
+  deleteTopic(topicId: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}/topics/${topicId}`);
+  }
+
   saveQuestion(topicId: string, question: IQuestion): Observable<void> {
     return this.http.post<void>(`${this.api}/topics/${topicId}/questions`, question);
   }

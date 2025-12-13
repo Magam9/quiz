@@ -56,6 +56,7 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
 export class TopicComponent implements OnInit {
   @Input() data!: ITopic;
   @Output() saveData = new EventEmitter<ITopic>();
+  @Output() deleteTopic = new EventEmitter<ITopic>();
 
   isInputDisplay = false;
   selectedQuestion: IQuestion | null = null;
@@ -186,6 +187,10 @@ export class TopicComponent implements OnInit {
   addQuestion() {
     this.isInputDisplay = true;
     this.questionForm.reset();
+  }
+
+  requestDeleteTopic() {
+    this.deleteTopic.emit(this.data);
   }
 
   saveQuestion(event: Event) {

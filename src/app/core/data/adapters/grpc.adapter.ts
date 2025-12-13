@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, throwError } from 'rxjs';
 
 import { IDataAdapter } from '../types';
 
@@ -33,6 +33,10 @@ export class GrpcDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     return this.client
       .saveTopic(new SaveTopicRequest({ topic: proto }))
       .pipe(map(() => void 0));
+  }
+
+  deleteTopic(topicId: string): Observable<void> {
+    return throwError(() => new Error('Delete topic is not supported for gRPC adapter yet.'));
   }
 
   saveQuestion(topicId: string, question: IQuestion): Observable<void> {

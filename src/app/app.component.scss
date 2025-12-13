@@ -84,6 +84,7 @@
 .hero-inner {
   position: relative;
   display: flex;
+  flex-direction: column;
   gap: 32px;
   z-index: 1;
 }
@@ -155,7 +156,6 @@
   color: #f5f6ff;
   box-shadow: 0 25px 60px rgba(3, 5, 22, 0.45);
   display: flex;
-  flex-direction: column;
   gap: 20px;
 }
 

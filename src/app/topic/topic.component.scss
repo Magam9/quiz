@@ -5,10 +5,8 @@
   box-shadow: 0 25px 40px rgba(5, 14, 47, 0.08);
   padding: 32px 36px;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
   max-height: 90vh;
-  min-height: 600px;
+  min-height: 750px;
   border: 1px solid rgba(93, 104, 188, 0.1);
 
   &::before {
@@ -123,10 +121,6 @@
   }
 }
 
-.questions-wrapper {
-  margin-top: 24px;
-}
-
 .questions-headline {
   display: flex;
   justify-content: space-between;
@@ -206,6 +200,7 @@
   height: auto !important;
   min-height: 600px;
   align-items: stretch;
+  overflow-y: auto;
   
   ::ng-deep .mat-grid-tile-content {
     padding: 16px;

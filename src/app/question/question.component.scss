@@ -125,54 +125,35 @@
   text-transform: uppercase;
   letter-spacing: 3px;
   color: rgba(17, 25, 54, 0.55);
+  margin-bottom: 8px;
 }
 
-.sub-timeline {
+.sub-questions {
+  margin-top: 8px;
+}
+
+.sub-questions-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-height: 220px;
-  overflow-y: auto;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(91, 107, 255, 0.15);
 }
 
-.timeline-entry {
-  border-left: 2px solid rgba(91, 107, 255, 0.2);
-  padding-left: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+.nested-question {
+  ::ng-deep .question-card {
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(15, 18, 36, 0.06);
+    border: 1px solid rgba(91, 107, 255, 0.1);
+  }
 
-.timeline-question .question-line {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  ::ng-deep .card-header h4 {
+    font-size: 16px;
+  }
 
-.timeline-question strong {
-  font-weight: 600;
-}
-
-.timeline-answer {
-  margin: 0;
-  color: rgba(16, 22, 58, 0.8);
-}
-
-.sub-edit {
-  border: 1px solid rgba(91, 107, 255, 0.2);
-  border-radius: 12px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.sub-edit-actions {
-  display: flex;
-  gap: 8px;
-
-  button {
-    text-transform: none;
+  ::ng-deep .eyebrow {
+    font-size: 10px;
   }
 }
 

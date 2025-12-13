@@ -71,58 +71,13 @@
 
     <div class="sub-questions" *ngIf="data.subQuestions.length">
       <div class="sub-heading">Follow-ups</div>
-      <div class="sub-timeline">
-        <div class="timeline-entry" *ngFor="let sub of data.subQuestions">
-          <div class="timeline-question">
-            <div class="question-line">
-              <strong>{{ sub.question }}</strong>
-              <button
-                mat-icon-button
-                class="edit-btn"
-                (click)="startEditSubQuestion(sub)"
-                aria-label="Edit follow-up">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </div>
-            <p class="timeline-answer">{{ sub.answer }}</p>
-          </div>
-
-          <div class="sub-edit"
-              *ngIf="editSubQuestionId === sub.id">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Follow-up question</mat-label>
-              <textarea
-                matInput
-                cdkTextareaAutosize
-                [formControl]="editSubQuestionQuestionCtrl"
-                placeholder="Update question"
-              ></textarea>
-              <mat-error *ngIf="editSubQuestionQuestionCtrl.invalid">Required</mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Answer</mat-label>
-              <textarea
-                matInput
-                cdkTextareaAutosize
-                [formControl]="editSubQuestionAnswerCtrl"
-                placeholder="Update answer"
-              ></textarea>
-              <mat-error *ngIf="editSubQuestionAnswerCtrl.invalid">Required</mat-error>
-            </mat-form-field>
-
-            <div class="sub-edit-actions">
-              <button
-                mat-flat-button
-                color="primary"
-                (click)="saveEditSubQuestion()"
-                [disabled]="editSubQuestionQuestionCtrl.invalid || editSubQuestionAnswerCtrl.invalid">
-                Save
-              </button>
-              <button mat-stroked-button (click)="cancelEditSubQuestion()">Cancel</button>
-            </div>
-          </div>
-        </div>
+      <div class="sub-questions-list">
+        <app-question
+          *ngFor="let sub of data.subQuestions"
+          [data]="sub"
+          (saveData)="saveSubQuestionData($event)"
+          class="nested-question"
+        ></app-question>
       </div>
     </div>
   </div>

@@ -135,26 +135,47 @@
 .sub-questions-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   margin-left: 16px;
   padding-left: 16px;
   border-left: 2px solid rgba(91, 107, 255, 0.15);
 }
 
-.nested-question {
-  ::ng-deep .question-card {
-    padding: 16px;
-    box-shadow: 0 4px 12px rgba(15, 18, 36, 0.06);
-    border: 1px solid rgba(91, 107, 255, 0.1);
-  }
+.sub-question-item {
+  padding: 8px 12px;
+  background: rgba(244, 248, 255, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(91, 107, 255, 0.1);
+}
 
-  ::ng-deep .card-header h4 {
-    font-size: 16px;
-  }
+.sub-question-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  ::ng-deep .eyebrow {
-    font-size: 10px;
-  }
+.sub-question-content strong {
+  font-size: 13px;
+  color: #111936;
+  font-weight: 600;
+}
+
+.sub-answer-text {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(17, 25, 54, 0.7);
+  line-height: 1.4;
+}
+
+.sub-badge {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: rgba(95, 111, 255, 0.8);
+  background: rgba(95, 111, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  width: fit-content;
 }
 
 .edit-form {

@@ -1,0 +1,98 @@
+.question-editor {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(15, 18, 36, 0.08);
+  border: 1px solid rgba(91, 107, 255, 0.1);
+}
+
+.editor-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(91, 107, 255, 0.1);
+
+  h4 {
+    margin: 4px 0 0;
+    font-size: 18px;
+    color: #111936;
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  color: rgba(17, 25, 54, 0.6);
+  margin: 0;
+}
+
+.follow-up-count {
+  font-size: 12px;
+  color: rgba(17, 25, 54, 0.5);
+  background: rgba(95, 111, 255, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(91, 107, 255, 0.1);
+
+  button {
+    text-transform: none;
+  }
+}
+
+.add-follow-up-btn {
+  margin-left: auto;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(17, 25, 54, 0.4);
+  padding: 48px;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}

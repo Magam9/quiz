@@ -22,8 +22,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { QuestionComponent } from '../question/question.component';
-import { generateRandomId } from '../helpers';
+import { QuestionTreeComponent } from '../question/question-tree/question-tree.component';
+import { QuestionEditorComponent } from '../question/question-editor/question-editor.component';
+import { FollowupsGridComponent } from '../question/followups-grid/followups-grid.component';
+import { generateRandomId, findQuestionById, updateQuestionInTree, addFollowUpToQuestion, getTotalFollowUps } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
 import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-injector';
 
@@ -41,7 +43,9 @@ import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-inje
     MatDividerModule,
     TextFieldModule,
     MatGridListModule,
-    QuestionComponent,
+    QuestionTreeComponent,
+    QuestionEditorComponent,
+    FollowupsGridComponent,
   ],
   providers: [
     provideDataAdapter(),
@@ -54,38 +58,115 @@ export class TopicComponent implements OnInit {
   @Output() saveData = new EventEmitter<ITopic>();
 
   isInputDisplay = false;
-  question = new FormControl('', [Validators.required]);
-  answer = new FormControl('', [Validators.required]);
+  selectedQuestion: IQuestion | null = null;
+  selectedQuestionId: string | null = null;
+  isAddingFollowUp = false;
+  followUpQuestionCtrl = new FormControl('', [Validators.required]);
+  followUpAnswerCtrl = new FormControl('', [Validators.required]);
 
   questionForm = new FormGroup({
     question: new FormControl('', [Validators.required]),
     answer: new FormControl('', [Validators.required]),
   });
 
-  gridCols = 3;
+  followUpForm = new FormGroup({
+    question: this.followUpQuestionCtrl,
+    answer: this.followUpAnswerCtrl,
+  });
 
   private readonly dataAdapter = inject(DATA_ADAPTER);
   private readonly breakpointObserver = inject(BreakpointObserver);
 
   ngOnInit() {
-    this.breakpointObserver
-      .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
-      .subscribe((state) => {
-        if (state.breakpoints[Breakpoints.XSmall] || state.breakpoints[Breakpoints.Small]) {
-          this.gridCols = 1;
-        } else if (state.breakpoints[Breakpoints.Medium]) {
-          this.gridCols = 2;
-        } else {
-          this.gridCols = 3;
-        }
-      });
+    // Component initialization
   }
 
   get totalFollowUps(): number {
-    return this.data.questions.reduce(
-      (acc, q) => acc + (q.subQuestions ? q.subQuestions.length : 0),
-      0
+    return getTotalFollowUps(this.data.questions);
+  }
+
+  get maxDepth(): number {
+    const calculateDepth = (questions: IQuestion[], depth = 0): number => {
+      if (!questions || questions.length === 0) return depth;
+      return Math.max(
+        depth,
+        ...questions.map((q) =>
+          q.subQuestions && q.subQuestions.length > 0
+            ? calculateDepth(q.subQuestions, depth + 1)
+            : depth
+        )
+      );
+    };
+    return calculateDepth(this.data.questions);
+  }
+
+  onQuestionSelected(question: IQuestion) {
+    this.selectedQuestion = question;
+    this.selectedQuestionId = question.id;
+    this.isAddingFollowUp = false;
+    this.followUpQuestionCtrl.reset();
+    this.followUpAnswerCtrl.reset();
+  }
+
+  onQuestionSaved(updated: IQuestion) {
+    this.data.questions = updateQuestionInTree(this.data.questions, updated);
+    this.selectedQuestion = updated;
+    this.persist();
+    this.saveData.emit(this.data);
+  }
+
+  onAddFollowUp() {
+    if (!this.selectedQuestion) return;
+    this.isAddingFollowUp = true;
+    this.followUpQuestionCtrl.reset();
+    this.followUpAnswerCtrl.reset();
+  }
+
+  saveFollowUp() {
+    if (
+      !this.selectedQuestion ||
+      this.followUpQuestionCtrl.invalid ||
+      this.followUpAnswerCtrl.invalid
+    ) {
+      return;
+    }
+
+    const newFollowUp: IQuestion = {
+      id: generateRandomId('subq'),
+      question: this.followUpQuestionCtrl.value!.trim(),
+      answer: this.followUpAnswerCtrl.value!.trim(),
+      subQuestions: [],
+      currentValue: 0,
+    };
+
+    this.data.questions = addFollowUpToQuestion(
+      this.data.questions,
+      this.selectedQuestion.id,
+      newFollowUp
     );
+
+    // Update selected question to include new follow-up
+    const updated = findQuestionById(this.data.questions, this.selectedQuestion.id);
+    if (updated) {
+      this.selectedQuestion = updated;
+      this.selectedQuestionId = updated.id;
+    }
+
+    this.isAddingFollowUp = false;
+    this.followUpQuestionCtrl.reset();
+    this.followUpAnswerCtrl.reset();
+    this.persist();
+    this.saveData.emit(this.data);
+  }
+
+  cancelFollowUp() {
+    this.isAddingFollowUp = false;
+    this.followUpQuestionCtrl.reset();
+    this.followUpAnswerCtrl.reset();
+  }
+
+  onFollowUpSelected(followUp: IQuestion) {
+    this.onQuestionSelected(followUp);
   }
 
   addQuestion() {
@@ -119,14 +200,6 @@ export class TopicComponent implements OnInit {
     this.saveData.emit(this.data);
   }
 
-  saveQuestionData(updated: IQuestion) {
-    const idx = this.data.questions.findIndex((question) => question.id === updated.id);
-    if (idx > -1) {
-      this.data.questions[idx] = updated;
-      this.persist();
-      this.saveData.emit(this.data);
-    }
-  }
 
   cancelQuestion() {
     this.questionForm.reset();
@@ -134,8 +207,7 @@ export class TopicComponent implements OnInit {
   }
 
   private resetQuestionForm() {
-    this.question.reset();
-    this.answer.reset();
+    this.questionForm.reset();
     this.isInputDisplay = false;
   }
 

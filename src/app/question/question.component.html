@@ -5,7 +5,7 @@
       <h4>{{ data.question }}</h4>
     </div>
     <div class="header-actions">
-      <span class="sub-count">{{ data.subQuestions.length || 0 }} follow-ups</span>
+      <span class="sub-count">{{ data.subQuestions?.length || 0 }} follow-ups</span>
       <button mat-icon-button class="edit-btn" (click)="startEdit()" aria-label="Edit question">
         <mat-icon>edit</mat-icon>
       </button>
@@ -69,15 +69,18 @@
       </div>
     }
 
-    <div class="sub-questions" *ngIf="data.subQuestions.length">
+    <div class="sub-questions" *ngIf="data.subQuestions?.length">
       <div class="sub-heading">Follow-ups</div>
       <div class="sub-questions-list">
-        <app-question
-          *ngFor="let sub of data.subQuestions"
-          [data]="sub"
-          (saveData)="saveSubQuestionData($event)"
-          class="nested-question"
-        ></app-question>
+        <div class="sub-question-item" *ngFor="let sub of data.subQuestions">
+          <div class="sub-question-content">
+            <strong>{{ sub.question }}</strong>
+            <p class="sub-answer-text">{{ sub.answer }}</p>
+            <span class="sub-badge" *ngIf="sub.subQuestions?.length">
+              {{ sub.subQuestions.length }} nested
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

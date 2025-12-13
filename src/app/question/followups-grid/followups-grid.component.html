@@ -1,0 +1,28 @@
+<div class="followups-grid" *ngIf="followUps.length > 0">
+  <div class="grid-header">
+    <p class="eyebrow">Follow-ups</p>
+    <span class="count">{{ followUps.length }} follow-up{{ followUps.length !== 1 ? 's' : '' }}</span>
+  </div>
+
+  <mat-grid-list
+    [cols]="gridCols"
+    rowHeight="200px"
+    gutterSize="16"
+    class="grid-list"
+  >
+    <mat-grid-tile *ngFor="let followUp of followUps" class="grid-tile">
+      <mat-card class="follow-up-card" (click)="selectFollowUp(followUp)">
+        <div class="card-content">
+          <div class="card-header">
+            <mat-icon class="card-icon">subdirectory_arrow_right</mat-icon>
+            <h5>{{ followUp.question }}</h5>
+          </div>
+          <p class="card-answer">{{ followUp.answer }}</p>
+          <div class="card-footer" *ngIf="followUp.subQuestions?.length">
+            <span class="sub-count">{{ followUp.subQuestions.length }} nested</span>
+          </div>
+        </div>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

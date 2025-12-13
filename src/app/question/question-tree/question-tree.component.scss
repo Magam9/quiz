@@ -1,0 +1,118 @@
+.question-tree {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(91, 107, 255, 0.1);
+}
+
+.tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(91, 107, 255, 0.1);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 11px;
+  color: rgba(17, 25, 54, 0.6);
+  margin: 0;
+}
+
+.count {
+  font-size: 12px;
+  color: rgba(17, 25, 54, 0.5);
+}
+
+.tree-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.tree-item {
+  cursor: pointer;
+  border-radius: 8px;
+  margin-bottom: 4px;
+  transition: background-color 0.2s;
+  padding: 8px 12px !important;
+  height: auto !important;
+  min-height: 48px;
+
+  &:hover {
+    background-color: rgba(91, 107, 255, 0.05);
+  }
+
+  &.selected {
+    background-color: rgba(95, 111, 255, 0.15);
+    border-left: 3px solid rgba(95, 111, 255, 0.8);
+  }
+
+  &.depth-1 {
+    padding-left: 32px !important;
+    font-size: 14px;
+  }
+}
+
+.tree-item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.tree-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: rgba(17, 25, 54, 0.5);
+  flex-shrink: 0;
+}
+
+.tree-text {
+  flex: 1;
+  font-size: 14px;
+  color: #111936;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-badge {
+  background: rgba(95, 111, 255, 0.15);
+  color: rgba(95, 111, 255, 0.9);
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgba(17, 25, 54, 0.4);
+  padding: 32px;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}

@@ -25,6 +25,10 @@
     </div>
     <div class="insight-card">
       <span class="insight-label">Follow-up depth</span>
+      <strong>{{ maxDepth }}</strong>
+    </div>
+    <div class="insight-card">
+      <span class="insight-label">Total follow-ups</span>
       <strong>{{ totalFollowUps }}</strong>
     </div>
     <div class="insight-card">
@@ -95,21 +99,97 @@
       </div>
     </div>
 
+    <!-- New Grid Layout -->
     <mat-grid-list
-      class="question-grid"
-      [cols]="gridCols"
-      rowHeight="420px"
-      gutterSize="18"
+      class="editor-grid"
+      cols="12"
+      rowHeight="fit"
+      gutterSize="16"
     >
-      <mat-grid-tile
-        *ngFor="let q of data.questions"
-        class="question-grid-tile"
-      >
-        <div class="question-tile">
-          <app-question
-            [data]="q"
-            (saveData)="saveQuestionData($event)"
-          ></app-question>
+      <!-- Header Row -->
+      <mat-grid-tile [colspan]="12" class="summary-row">
+        <div class="summary-content">
+          <div class="summary-item">
+            <span class="summary-label">Total prompts</span>
+            <span class="summary-value">{{ data.questions.length }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Follow-up depth</span>
+            <span class="summary-value">{{ maxDepth }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Total follow-ups</span>
+            <span class="summary-value">{{ totalFollowUps }}</span>
+          </div>
+        </div>
+      </mat-grid-tile>
+
+      <!-- Main Content Row -->
+      <mat-grid-tile [colspan]="4" class="tree-panel">
+        <app-question-tree
+          [questions]="data.questions"
+          [selectedQuestionId]="selectedQuestionId"
+          (questionSelected)="onQuestionSelected($event)"
+        ></app-question-tree>
+      </mat-grid-tile>
+
+      <mat-grid-tile [colspan]="8" class="editor-panel">
+        <div class="editor-container">
+          <app-question-editor
+            [question]="selectedQuestion"
+            (save)="onQuestionSaved($event)"
+            (addFollowUp)="onAddFollowUp()"
+          ></app-question-editor>
+
+          <!-- Follow-up Form -->
+          <div *ngIf="isAddingFollowUp" class="follow-up-form">
+            <div class="form-header">
+              <p class="eyebrow">Add Follow-up</p>
+            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Follow-up question</mat-label>
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                [formControl]="followUpQuestionCtrl"
+                placeholder="Enter follow-up question"
+              ></textarea>
+              <mat-error *ngIf="followUpQuestionCtrl.invalid">Required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Expected response</mat-label>
+              <textarea
+                matInput
+                cdkTextareaAutosize
+                [formControl]="followUpAnswerCtrl"
+                placeholder="Enter expected answer"
+              ></textarea>
+              <mat-error *ngIf="followUpAnswerCtrl.invalid">Required</mat-error>
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="saveFollowUp()"
+                [disabled]="followUpQuestionCtrl.invalid || followUpAnswerCtrl.invalid"
+              >
+                Save follow-up
+              </button>
+              <button mat-stroked-button (click)="cancelFollowUp()">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <!-- Follow-ups Grid -->
+          <app-followups-grid
+            *ngIf="selectedQuestion?.subQuestions?.length"
+            [followUps]="selectedQuestion?.subQuestions || []"
+            [parentQuestionId]="selectedQuestionId"
+            (followUpSelected)="onFollowUpSelected($event)"
+          ></app-followups-grid>
         </div>
       </mat-grid-tile>
     </mat-grid-list>

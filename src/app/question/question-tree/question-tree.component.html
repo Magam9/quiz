@@ -1,0 +1,30 @@
+<div class="question-tree">
+  <div class="tree-header">
+    <p class="eyebrow">Question Tree</p>
+    <span class="count">{{ treeNodes.length }} questions</span>
+  </div>
+
+  <mat-list class="tree-list">
+    <mat-list-item
+      *ngFor="let node of treeNodes"
+      [class.selected]="isSelected(node.question.id)"
+      [class.depth-1]="node.depth === 1"
+      (click)="selectQuestion(node.question)"
+      class="tree-item"
+    >
+      <div class="tree-item-content">
+        <mat-icon class="tree-icon" *ngIf="node.depth === 0">help_outline</mat-icon>
+        <mat-icon class="tree-icon" *ngIf="node.depth === 1">subdirectory_arrow_right</mat-icon>
+        <span class="tree-text">{{ node.question.question }}</span>
+        <span class="tree-badge" *ngIf="node.question.subQuestions?.length">
+          {{ node.question.subQuestions.length }}
+        </span>
+      </div>
+    </mat-list-item>
+  </mat-list>
+
+  <div class="empty-state" *ngIf="treeNodes.length === 0">
+    <mat-icon>inbox</mat-icon>
+    <p>No questions yet</p>
+  </div>
+</div>

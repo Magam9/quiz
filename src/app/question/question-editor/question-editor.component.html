@@ -1,0 +1,73 @@
+<div class="question-editor">
+  <div *ngIf="question; else emptyState" class="editor-content">
+    <div class="editor-header">
+      <div>
+        <p class="eyebrow">Editor</p>
+        <h4>{{ question.question }}</h4>
+      </div>
+      <span class="follow-up-count" *ngIf="question.subQuestions?.length">
+        {{ question.subQuestions.length }} follow-ups
+      </span>
+    </div>
+
+    <div class="editor-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Question</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          [formControl]="questionCtrl"
+          (input)="onInputChange()"
+          placeholder="Enter the question"
+        ></textarea>
+        <mat-error *ngIf="questionCtrl.invalid">Required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Answer</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          [formControl]="answerCtrl"
+          (input)="onInputChange()"
+          placeholder="Enter the expected answer"
+        ></textarea>
+        <mat-error *ngIf="answerCtrl.invalid">Required</mat-error>
+      </mat-form-field>
+
+      <div class="editor-actions">
+        <button
+          mat-flat-button
+          color="primary"
+          (click)="saveChanges()"
+          [disabled]="!hasChanges || questionCtrl.invalid || answerCtrl.invalid"
+        >
+          Save changes
+        </button>
+        <button
+          mat-stroked-button
+          (click)="cancel()"
+          [disabled]="!hasChanges"
+        >
+          Cancel
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="addFollowUp.emit()"
+          class="add-follow-up-btn"
+        >
+          <mat-icon>playlist_add</mat-icon>
+          Add follow-up
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <mat-icon>edit_note</mat-icon>
+      <p>Select a question to edit</p>
+    </div>
+  </ng-template>
+</div>

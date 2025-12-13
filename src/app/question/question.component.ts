@@ -10,22 +10,19 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { generateRandomId } from '../helpers';
 import { IQuestion } from '../core/models';
 
-const QUESTION_COMPONENT_IMPORTS = [
-  CommonModule,
-  ReactiveFormsModule,
-  MatCardModule,
-  MatButtonModule,
-  MatIconModule,
-  MatFormFieldModule,
-  MatInputModule,
-  TextFieldModule,
-] as const;
 
 @Component({
   selector: 'app-question',
   standalone: true,
   imports: [
-    ...QUESTION_COMPONENT_IMPORTS,
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    TextFieldModule,
   ],
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
@@ -33,7 +30,6 @@ const QUESTION_COMPONENT_IMPORTS = [
 export class QuestionComponent {
   @Input() data!: IQuestion;
   @Output() saveData = new EventEmitter<IQuestion>();
-
 
   isInputDisplay = false;
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
@@ -82,6 +78,9 @@ export class QuestionComponent {
       currentValue: 0,
     };
 
+    if (!this.data.subQuestions) {
+      this.data.subQuestions = [];
+    }
     this.data.subQuestions.push(newSubQuestion);
     this.questionCtrl.reset();
     this.answerCtrl.reset();
@@ -90,6 +89,9 @@ export class QuestionComponent {
   }
 
   saveSubQuestionData(updated: IQuestion) {
+    if (!this.data.subQuestions) {
+      this.data.subQuestions = [];
+    }
     const idx = this.data.subQuestions.findIndex((subQuestion) => subQuestion.id === updated.id);
     if (idx > -1) {
       this.data.subQuestions[idx] = updated;
@@ -104,7 +106,3 @@ export class QuestionComponent {
     this.isInputDisplay = false;
   }
 }
-
-// Додаємо компонент до imports для рекурсивного використання
-(QuestionComponent as any).ɵcmp.imports.push(QuestionComponent);
-

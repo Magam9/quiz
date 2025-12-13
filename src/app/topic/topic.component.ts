@@ -25,7 +25,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { QuestionTreeComponent } from '../question/question-tree/question-tree.component';
 import { QuestionEditorComponent } from '../question/question-editor/question-editor.component';
 import { FollowupsGridComponent } from '../question/followups-grid/followups-grid.component';
-import { generateRandomId, findQuestionById, updateQuestionInTree, addFollowUpToQuestion, getTotalFollowUps } from '../helpers';
+import { generateRandomId, findQuestionById, updateQuestionInTree, addFollowUpToQuestion, getTotalFollowUps, removeQuestionFromTree } from '../helpers';
 import { IQuestion, ITopic } from '../core/models';
 import { DATA_ADAPTER, provideDataAdapter } from '../core/data/data-adapter-injector';
 
@@ -169,6 +169,20 @@ export class TopicComponent implements OnInit {
     this.onQuestionSelected(followUp);
   }
 
+  onQuestionDeleted(question: IQuestion) {
+    if (!question) {
+      return;
+    }
+    this.removeQuestionAndRefresh(question.id);
+  }
+
+  onFollowUpDeleted(event: { followUpId: string; parentId: string | null }) {
+    if (!event || !event.followUpId) {
+      return;
+    }
+    this.removeQuestionAndRefresh(event.followUpId);
+  }
+
   addQuestion() {
     this.isInputDisplay = true;
     this.questionForm.reset();
@@ -213,5 +227,44 @@ export class TopicComponent implements OnInit {
 
   private persist() {
     this.dataAdapter.saveTopic(this.data);
+  }
+
+  private removeQuestionAndRefresh(questionId: string) {
+    const { updatedQuestions, removed, parentIdOfRemoved } = removeQuestionFromTree(
+      this.data.questions,
+      questionId
+    );
+    if (!removed) {
+      return;
+    }
+
+    this.data.questions = updatedQuestions;
+
+    if (parentIdOfRemoved) {
+      const parent = findQuestionById(this.data.questions, parentIdOfRemoved);
+      if (parent) {
+        this.onQuestionSelected(parent);
+      } else {
+        this.selectFirstAvailableQuestion();
+      }
+    } else {
+      this.selectFirstAvailableQuestion();
+    }
+
+    this.isAddingFollowUp = false;
+    this.followUpQuestionCtrl.reset();
+    this.followUpAnswerCtrl.reset();
+    this.persist();
+    this.saveData.emit(this.data);
+  }
+
+  private selectFirstAvailableQuestion() {
+    const firstQuestion = this.data.questions[0];
+    if (firstQuestion) {
+      this.onQuestionSelected(firstQuestion);
+    } else {
+      this.selectedQuestion = null;
+      this.selectedQuestionId = null;
+    }
   }
 }

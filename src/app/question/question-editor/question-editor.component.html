@@ -21,6 +21,10 @@
       </div>
       <div class="editor-actions">
         <button mat-flat-button color="primary" (click)="startEditing()">Edit</button>
+        <button mat-stroked-button color="warn" (click)="requestDelete()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
         <button mat-stroked-button color="primary" (click)="addFollowUp.emit()" class="add-follow-up-btn">
           <mat-icon>playlist_add</mat-icon>
           Add follow-up
@@ -64,6 +68,10 @@
         </button>
         <button mat-stroked-button (click)="cancel()">
           Cancel
+        </button>
+        <button mat-stroked-button color="warn" (click)="requestDelete()">
+          <mat-icon>delete</mat-icon>
+          Delete
         </button>
         <button
           mat-stroked-button

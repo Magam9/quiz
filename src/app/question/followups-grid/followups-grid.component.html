@@ -5,15 +5,17 @@
   </div>
 
   <div class="followups-list">
-    <mat-card 
-      *ngFor="let followUp of followUps" 
-      class="follow-up-card" 
+    <mat-card
+      *ngFor="let followUp of followUps"
+      class="follow-up-card"
       (click)="selectFollowUp(followUp)"
     >
       <div class="card-content">
         <div class="card-header">
-          <mat-icon class="card-icon">subdirectory_arrow_right</mat-icon>
-          <h5>{{ followUp.question }}</h5>
+          <div class="card-heading">
+            <mat-icon class="card-icon">subdirectory_arrow_right</mat-icon>
+            <h5>{{ followUp.question }}</h5>
+          </div>
         </div>
         <p class="card-answer">{{ followUp.answer }}</p>
         <div class="card-footer" *ngIf="followUp.subQuestions?.length">

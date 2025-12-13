@@ -29,6 +29,7 @@ export class QuestionEditorComponent implements OnChanges {
   @Input() question: IQuestion | null = null;
   @Output() save = new EventEmitter<IQuestion>();
   @Output() addFollowUp = new EventEmitter<void>();
+  @Output() deleteQuestion = new EventEmitter<IQuestion>();
 
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
@@ -87,5 +88,12 @@ export class QuestionEditorComponent implements OnChanges {
     this.answerCtrl.setValue(this.question.answer);
     this.hasChanges = false;
     this.isEditing = true;
+  }
+
+  requestDelete() {
+    if (!this.question) {
+      return;
+    }
+    this.deleteQuestion.emit(this.question);
   }
 }

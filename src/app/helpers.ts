@@ -1,5 +1,11 @@
 import { IQuestion } from './core/models';
 
+export interface RemoveQuestionResult {
+  updatedQuestions: IQuestion[];
+  removed: boolean;
+  parentIdOfRemoved: string | null;
+}
+
 export function generateRandomId(prefix: string): string {
   return `${prefix}_${(Math.random() + 1).toString(36).substring(2)}`;
 }
@@ -113,4 +119,40 @@ export function getTotalFollowUps(questions: IQuestion[]): number {
     const subCount = q.subQuestions ? getTotalFollowUps(q.subQuestions) : 0;
     return total + (q.subQuestions?.length || 0) + subCount;
   }, 0);
+}
+
+export function removeQuestionFromTree(
+  questions: IQuestion[],
+  targetId: string,
+  parentId: string | null = null
+): RemoveQuestionResult {
+  let removed = false;
+  let parentIdOfRemoved: string | null = null;
+
+  const updatedQuestions: IQuestion[] = [];
+
+  for (const question of questions) {
+    if (question.id === targetId) {
+      removed = true;
+      parentIdOfRemoved = parentId;
+      continue;
+    }
+
+    if (question.subQuestions && question.subQuestions.length > 0) {
+      const result = removeQuestionFromTree(question.subQuestions, targetId, question.id);
+      if (result.removed) {
+        removed = true;
+        parentIdOfRemoved = result.parentIdOfRemoved;
+        updatedQuestions.push({
+          ...question,
+          subQuestions: result.updatedQuestions,
+        });
+        continue;
+      }
+    }
+
+    updatedQuestions.push(question);
+  }
+
+  return { updatedQuestions, removed, parentIdOfRemoved };
 }

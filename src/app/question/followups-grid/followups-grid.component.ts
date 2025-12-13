@@ -21,8 +21,17 @@ export class FollowupsGridComponent {
   @Input() followUps: IQuestion[] = [];
   @Input() parentQuestionId: string | null = null;
   @Output() followUpSelected = new EventEmitter<IQuestion>();
+  @Output() followUpDeleted = new EventEmitter<{ followUpId: string; parentId: string | null }>();
 
   selectFollowUp(followUp: IQuestion) {
     this.followUpSelected.emit(followUp);
+  }
+
+  deleteFollowUp(followUp: IQuestion, event: Event) {
+    event.stopPropagation();
+    this.followUpDeleted.emit({
+      followUpId: followUp.id,
+      parentId: this.parentQuestionId,
+    });
   }
 }

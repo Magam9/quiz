@@ -56,7 +56,15 @@
 .card-header {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 8px;
+}
+
+.card-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1;
 }
 
 .card-icon {

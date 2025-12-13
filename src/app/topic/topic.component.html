@@ -93,6 +93,7 @@
             [question]="selectedQuestion"
             (save)="onQuestionSaved($event)"
             (addFollowUp)="onAddFollowUp()"
+            (deleteQuestion)="onQuestionDeleted($event)"
           ></app-question-editor>
 
           <!-- Follow-up Form -->
@@ -143,6 +144,7 @@
             [followUps]="selectedQuestion?.subQuestions || []"
             [parentQuestionId]="selectedQuestionId"
             (followUpSelected)="onFollowUpSelected($event)"
+            (followUpDeleted)="onFollowUpDeleted($event)"
           ></app-followups-grid>
         </div>
       </mat-grid-tile>

@@ -33,16 +33,19 @@ export class QuestionEditorComponent implements OnChanges {
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   hasChanges = false;
+  isEditing = false;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['question'] && this.question) {
       this.questionCtrl.setValue(this.question.question);
       this.answerCtrl.setValue(this.question.answer);
       this.hasChanges = false;
+      this.isEditing = false;
     } else if (!this.question) {
       this.questionCtrl.reset();
       this.answerCtrl.reset();
       this.hasChanges = false;
+      this.isEditing = false;
     }
   }
 
@@ -63,6 +66,7 @@ export class QuestionEditorComponent implements OnChanges {
       };
       this.save.emit(updated);
       this.hasChanges = false;
+      this.isEditing = false;
     }
   }
 
@@ -72,5 +76,16 @@ export class QuestionEditorComponent implements OnChanges {
       this.answerCtrl.setValue(this.question.answer);
       this.hasChanges = false;
     }
+    this.isEditing = false;
+  }
+
+  startEditing() {
+    if (!this.question) {
+      return;
+    }
+    this.questionCtrl.setValue(this.question.question);
+    this.answerCtrl.setValue(this.question.answer);
+    this.hasChanges = false;
+    this.isEditing = true;
   }
 }

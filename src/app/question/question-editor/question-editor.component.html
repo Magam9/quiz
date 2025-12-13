@@ -10,7 +10,25 @@
       </span>
     </div>
 
-    <div class="editor-form">
+    <div class="editor-display" *ngIf="!isEditing">
+      <div class="display-block">
+        <p class="label">Question</p>
+        <p class="content">{{ question.question }}</p>
+      </div>
+      <div class="display-block">
+        <p class="label">Answer</p>
+        <p class="content">{{ question.answer }}</p>
+      </div>
+      <div class="editor-actions">
+        <button mat-flat-button color="primary" (click)="startEditing()">Edit</button>
+        <button mat-stroked-button color="primary" (click)="addFollowUp.emit()" class="add-follow-up-btn">
+          <mat-icon>playlist_add</mat-icon>
+          Add follow-up
+        </button>
+      </div>
+    </div>
+
+    <div class="editor-form" *ngIf="isEditing">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Question</mat-label>
         <textarea
@@ -44,11 +62,7 @@
         >
           Save changes
         </button>
-        <button
-          mat-stroked-button
-          (click)="cancel()"
-          [disabled]="!hasChanges"
-        >
+        <button mat-stroked-button (click)="cancel()">
           Cancel
         </button>
         <button

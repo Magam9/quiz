@@ -18,25 +18,6 @@
     </div>
   </div>
 
-  <div class="topic-insights">
-    <div class="insight-card">
-      <span class="insight-label">Total prompts</span>
-      <strong>{{ data.questions.length }}</strong>
-    </div>
-    <div class="insight-card">
-      <span class="insight-label">Follow-up depth</span>
-      <strong>{{ maxDepth }}</strong>
-    </div>
-    <div class="insight-card">
-      <span class="insight-label">Total follow-ups</span>
-      <strong>{{ totalFollowUps }}</strong>
-    </div>
-    <div class="insight-card">
-      <span class="insight-label">Last updated</span>
-      <strong>moments ago</strong>
-    </div>
-  </div>
-
   <mat-divider></mat-divider>
 
   <div *ngIf="isInputDisplay" class="question-form">
@@ -99,32 +80,12 @@
       </div>
     </div>
 
-    <!-- New Grid Layout -->
     <mat-grid-list
       class="editor-grid"
       cols="12"
       rowHeight="fit"
       gutterSize="16"
     >
-      <!-- Header Row -->
-      <mat-grid-tile [colspan]="12" class="summary-row">
-        <div class="summary-content">
-          <div class="summary-item">
-            <span class="summary-label">Total prompts</span>
-            <span class="summary-value">{{ data.questions.length }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Follow-up depth</span>
-            <span class="summary-value">{{ maxDepth }}</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-label">Total follow-ups</span>
-            <span class="summary-value">{{ totalFollowUps }}</span>
-          </div>
-        </div>
-      </mat-grid-tile>
-
-      <!-- Main Content Row -->
       <mat-grid-tile [colspan]="4" class="tree-panel">
         <app-question-tree
           [questions]="data.questions"

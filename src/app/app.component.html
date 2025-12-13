@@ -71,7 +71,7 @@
         <div class="metric-icon icon-topics">
           <mat-icon>folder_open</mat-icon>
         </div>
-        <div>
+        <div class="metric-value-container">
           <span class="metric-label">Topics</span>
           <span class="metric-value">{{ totalTopics }}</span>
         </div>
@@ -80,7 +80,7 @@
         <div class="metric-icon icon-questions">
           <mat-icon>quiz</mat-icon>
         </div>
-        <div>
+        <div class="metric-value-container">
           <span class="metric-label">Questions &amp; follow-ups</span>
           <span class="metric-value">{{ totalQuestions }}</span>
         </div>
@@ -89,7 +89,7 @@
         <div class="metric-icon icon-ready">
           <mat-icon>check_circle</mat-icon>
         </div>
-        <div>
+        <div class="metric-value-container">
           <span class="metric-label">Ready for review</span>
           <span class="metric-value">{{ data.topics.length ? 'Yes' : 'No' }}</span>
         </div>

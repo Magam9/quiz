@@ -1,23 +1,39 @@
 <mat-toolbar class="main-toolbar">
   <div class="toolbar-content">
-    <div class="brand">
-      <span class="brand-title">Quizario</span>
+    <div class="toolbar-left">
+      <div class="brand">
+        <span class="brand-title">Quizario</span>
+      </div>
+      <div class="toolbar-actions primary">
+        <button
+          mat-raised-button
+          color="accent"
+          class="toolbar-btn"
+          (click)="addTopic()"
+          [disabled]="isInputDisplay"
+        >
+          <mat-icon>add_circle</mat-icon>
+          New Topic
+        </button>
+      </div>
     </div>
     <span class="spacer"></span>
-    <button mat-stroked-button color="accent" class="toolbar-btn" (click)="cleanAll()">
-      <mat-icon>delete_sweep</mat-icon>
-      Reset Workspace
-    </button>
-    <button
-      mat-flat-button
-      color="primary"
-      class="toolbar-btn"
-      (click)="openSummaryDialog()"
-      [disabled]="!data.topics.length"
-    >
-      <mat-icon>insights</mat-icon>
-      Launch Evaluation
-    </button>
+    <div class="toolbar-actions secondary">
+      <button mat-stroked-button color="accent" class="toolbar-btn" (click)="cleanAll()">
+        <mat-icon>delete_sweep</mat-icon>
+        Reset Workspace
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        class="toolbar-btn"
+        (click)="openSummaryDialog()"
+        [disabled]="!data.topics.length"
+      >
+        <mat-icon>insights</mat-icon>
+        Launch Evaluation
+      </button>
+    </div>
   </div>
 </mat-toolbar>
 
@@ -25,29 +41,6 @@
   <div class="hero-blur hero-blur-left"></div>
   <div class="hero-blur hero-blur-right"></div>
   <div class="hero-inner">
-    <div class="hero-copy">
-      <div class="hero-actions">
-        <button
-          mat-raised-button
-          color="accent"
-          (click)="addTopic()"
-          [disabled]="isInputDisplay"
-        >
-          <mat-icon>add_circle</mat-icon>
-          New Topic
-        </button>
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="openSummaryDialog()"
-          [disabled]="!data.topics.length"
-        >
-          <mat-icon>play_arrow</mat-icon>
-          Review Topics
-        </button>
-      </div>
-    </div>
-
     <mat-card class="metrics-card">
       <div class="metric">
         <div class="metric-icon icon-topics">

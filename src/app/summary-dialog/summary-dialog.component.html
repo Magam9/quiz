@@ -1,7 +1,7 @@
 <h2 mat-dialog-title class="dialog-title">
   <span>Evaluate Topic</span>
-  <button mat-icon-button class="close-btn" aria-label="Close evaluation" (click)="close()">
-    <mat-icon>close</mat-icon>
+  <button mat-stroked-button class="close-btn" aria-label="Close evaluation" (click)="close()">
+    Close
   </button>
 </h2>
 <mat-dialog-content class="dialog-content">
@@ -49,10 +49,9 @@
               (click)="selectQuestionNode(node)"
             >
               <mat-icon class="tree-icon">
-                {{ node.depth === 0 ? 'help_outline' : 'subdirectory_arrow_right' }}
+                {{ node.question.currentValue !== null ? 'check_circle' : (node.depth === 0 ? 'help_outline' : 'subdirectory_arrow_right') }}
               </mat-icon>
               <span class="tree-text">{{ node.question.question }}</span>
-              <mat-icon class="answered-icon" *ngIf="node.question.currentValue !== null">check_circle</mat-icon>
             </button>
           </div>
         </div>

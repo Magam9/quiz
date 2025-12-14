@@ -164,15 +164,19 @@ export class SummaryDialogComponent {
   }
 
   calculateScore(): number {
-    if (!this.evaluationNodes.length) {
+    const answeredNodes = this.evaluationNodes.filter(
+      (node) => node.question.currentValue !== null
+    );
+
+    if (!answeredNodes.length) {
       return 0;
     }
 
-    const totalAchieved = this.evaluationNodes.reduce(
+    const totalAchieved = answeredNodes.reduce(
       (acc, node) => acc + (node.question.currentValue ?? 0),
       0
     );
-    const totalPossible = this.evaluationNodes.length * this.maxQuestionValue;
+    const totalPossible = answeredNodes.length * this.maxQuestionValue;
     const percent = (totalAchieved / totalPossible) * 100;
 
     return Math.round(percent);

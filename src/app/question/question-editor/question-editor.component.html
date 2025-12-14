@@ -5,9 +5,15 @@
         <p class="eyebrow">Editor</p>
         <h4>{{ question.question }}</h4>
       </div>
-      <span class="follow-up-count" *ngIf="question.subQuestions?.length">
-        {{ question.subQuestions.length }} follow-ups
-      </span>
+      <div class="editor-header-actions">
+        <button mat-stroked-button color="primary" class="back-btn" *ngIf="canGoBack" (click)="backToParent.emit()">
+          <mat-icon>arrow_back</mat-icon>
+          Back to parent
+        </button>
+        <span class="follow-up-count" *ngIf="question.subQuestions?.length">
+          {{ question.subQuestions.length }} follow-ups
+        </span>
+      </div>
     </div>
 
     <div class="editor-display" *ngIf="!isEditing">

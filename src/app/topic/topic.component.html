@@ -91,9 +91,11 @@
         <div class="editor-container">
           <app-question-editor
             [question]="selectedQuestion"
+            [canGoBack]="parentStack.length > 0"
             (save)="onQuestionSaved($event)"
             (addFollowUp)="onAddFollowUp()"
             (deleteQuestion)="onQuestionDeleted($event)"
+            (backToParent)="onBackToParent()"
           ></app-question-editor>
 
           <!-- Follow-up Form -->

@@ -60,6 +60,7 @@ export class TopicComponent implements OnInit {
   isInputDisplay = false;
   selectedQuestion: IQuestion | null = null;
   selectedQuestionId: string | null = null;
+  parentStack: IQuestion[] = [];
   isAddingFollowUp = false;
   followUpQuestionCtrl = new FormControl('', [Validators.required]);
   followUpAnswerCtrl = new FormControl('', [Validators.required]);
@@ -100,12 +101,15 @@ export class TopicComponent implements OnInit {
     return calculateDepth(this.data.questions);
   }
 
-  onQuestionSelected(question: IQuestion) {
+  onQuestionSelected(question: IQuestion, preserveStack = false) {
     this.selectedQuestion = question;
     this.selectedQuestionId = question.id;
     this.isAddingFollowUp = false;
     this.followUpQuestionCtrl.reset();
     this.followUpAnswerCtrl.reset();
+    if (!preserveStack) {
+      this.parentStack = [];
+    }
   }
 
   onQuestionSaved(updated: IQuestion) {
@@ -166,7 +170,18 @@ export class TopicComponent implements OnInit {
   }
 
   onFollowUpSelected(followUp: IQuestion) {
-    this.onQuestionSelected(followUp);
+    if (this.selectedQuestion) {
+      this.parentStack.push(this.selectedQuestion);
+    }
+    this.onQuestionSelected(followUp, true);
+  }
+
+  onBackToParent() {
+    if (!this.parentStack.length) {
+      return;
+    }
+    const parent = this.parentStack.pop()!;
+    this.onQuestionSelected(parent, true);
   }
 
   onQuestionDeleted(question: IQuestion) {
@@ -265,6 +280,7 @@ export class TopicComponent implements OnInit {
     } else {
       this.selectedQuestion = null;
       this.selectedQuestionId = null;
+      this.parentStack = [];
     }
   }
 }

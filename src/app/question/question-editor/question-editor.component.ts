@@ -27,9 +27,11 @@ import { IQuestion } from '../../core/models';
 })
 export class QuestionEditorComponent implements OnChanges {
   @Input() question: IQuestion | null = null;
+  @Input() canGoBack = false;
   @Output() save = new EventEmitter<IQuestion>();
   @Output() addFollowUp = new EventEmitter<void>();
   @Output() deleteQuestion = new EventEmitter<IQuestion>();
+  @Output() backToParent = new EventEmitter<void>();
 
   questionCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);
   answerCtrl = new FormControl('', [Validators.required, Validators.minLength(1)]);

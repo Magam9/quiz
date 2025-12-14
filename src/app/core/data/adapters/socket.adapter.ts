@@ -26,11 +26,6 @@ export class SocketDataAdapter implements IDataAdapter<ITopic, IQuestion> {
     return of(void 0);
   }
 
-  deleteTopic(topicId: string): Observable<void> {
-    this.socket.emit('topics:delete', { topicId });
-    return of(void 0);
-  }
-
   saveQuestion(topicId: string, question: IQuestion): Observable<void> {
     this.socket.emit('questions:save', {
       topicId,

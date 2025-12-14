@@ -92,19 +92,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  deleteTopic(topic: ITopic) {
-    if (!topic) return;
-
-    this.dataAdapter.deleteTopic(topic.id).subscribe({
-      next: () => {
-        this.data.topics = this.data.topics.filter(t => t.id !== topic.id);
-      },
-      error: (err) => {
-        console.error('Failed to delete topic:', err);
-      },
-    });
-  }
-
   cleanAll() {
     this.data.topics = [];
     this.isInputDisplay = false;

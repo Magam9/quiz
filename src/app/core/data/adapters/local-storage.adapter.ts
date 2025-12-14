@@ -34,12 +34,6 @@ export class LocalStorageDataAdapter implements IDataAdapter<ITopic, IQuestion> 
     return of(void 0);
   }
 
-  deleteTopic(topicId: string): Observable<void> {
-    const topics = this.readAll().filter(t => t.id !== topicId);
-    this.writeAll(topics);
-    return of(void 0);
-  }
-
   saveQuestion(topicId: string, question: IQuestion): Observable<void> {
     const topics = this.readAll();
     const topic = topics.find(t => t.id === topicId);

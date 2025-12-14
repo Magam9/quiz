@@ -108,10 +108,18 @@ export class SummaryDialogComponent {
   }
 
   calculateScore(): number {
-    return this.flatQuestions.reduce(
+    if (!this.flatQuestions.length) {
+      return 0;
+    }
+
+    const totalAchieved = this.flatQuestions.reduce(
       (acc, question) => acc + (question.currentValue ?? 0),
       0
     );
+    const totalPossible = this.flatQuestions.length * this.maxQuestionValue;
+    const percent = (totalAchieved / totalPossible) * 100;
+
+    return Math.round(percent);
   }
 
   close() {

@@ -5,8 +5,6 @@ export interface IDataAdapter<TTopic, TQuestion> {
 
   saveTopic(topic: TTopic): Observable<void>;
 
-  deleteTopic(topicId: string): Observable<void>;
-
   saveQuestion(topicId: string, question: TQuestion): Observable<void>;
 
   saveCurrentValue(

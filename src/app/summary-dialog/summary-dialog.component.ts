@@ -144,7 +144,9 @@ export class SummaryDialogComponent {
     this.currentValueCtrl.setValidators(validators);
     this.currentValueCtrl.updateValueAndValidity();
 
-    this.currentValueCtrl.setValue(current.currentValue ?? null);
+    this.currentValueCtrl.reset(current.currentValue ?? null, {
+      emitEvent: false,
+    });
   }
 
   persistCurrentValue() {

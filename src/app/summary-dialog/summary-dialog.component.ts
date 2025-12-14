@@ -41,7 +41,14 @@ export class SummaryDialogComponent {
     @Inject(MAT_DIALOG_DATA) public topics: ITopic[]
   ) {}
 
+  get availableTopics(): ITopic[] {
+    return (this.topics || []).filter((topic) => topic.questions?.length);
+  }
+
   selectTopic(topic: ITopic) {
+    if (!topic.questions?.length) {
+      return;
+    }
     this.selectedTopic = topic;
     this.flatQuestions = this.flattenQuestions(topic.questions);
     this.currentIndex = 0;

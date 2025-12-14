@@ -9,16 +9,21 @@
     <div class="intro-card">
       <h3>Select a topic to begin</h3>
       <p>Choose the topic you would like to evaluate. You can always return and try a different area.</p>
-      <div class="topic-list">
+      <div class="topic-list" *ngIf="availableTopics.length; else emptyTopics">
         <button
           mat-stroked-button
           color="primary"
           class="topic-pill"
-          *ngFor="let topic of topics"
+          *ngFor="let topic of availableTopics"
           (click)="selectTopic(topic)">
           {{ topic.name }}
         </button>
       </div>
+      <ng-template #emptyTopics>
+        <p class="no-topics">
+          No topics with questions are available for evaluation yet.
+        </p>
+      </ng-template>
     </div>
   </ng-container>
 

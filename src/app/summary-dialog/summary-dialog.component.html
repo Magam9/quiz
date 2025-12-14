@@ -28,73 +28,111 @@
   </ng-container>
 
   <ng-container *ngIf="selectedTopic">
-    <ng-container *ngIf="currentIndex < flatQuestions.length; else summary">
-      <div class="progress">
-        <div>
-          <span class="progress-step">Question {{ currentIndex + 1 }} / {{ flatQuestions.length }}</span>
-          <span class="progress-topic">{{ selectedTopic.name }}</span>
+    <ng-container *ngIf="!showSummary; else summary">
+      <div class="evaluation-layout">
+        <div class="tree-panel">
+          <div class="tree-header">
+            <p class="eyebrow">Question tree</p>
+            <span class="tree-count">{{ evaluationNodes.length }} questions</span>
+          </div>
+          <div class="tree-list">
+            <button
+              mat-stroked-button
+              type="button"
+              class="tree-item"
+              *ngFor="let node of evaluationNodes"
+              [ngClass]="{
+                selected: currentQuestion?.id === node.question.id,
+                answered: node.question.currentValue !== null
+              }"
+              [style.paddingLeft.px]="node.depth * 16 + 12"
+              (click)="selectQuestionNode(node)"
+            >
+              <mat-icon class="tree-icon">
+                {{ node.depth === 0 ? 'help_outline' : 'subdirectory_arrow_right' }}
+              </mat-icon>
+              <span class="tree-text">{{ node.question.question }}</span>
+              <mat-icon class="answered-icon" *ngIf="node.question.currentValue !== null">check_circle</mat-icon>
+            </button>
+          </div>
         </div>
-        <button mat-stroked-button color="accent" (click)="backToPicker()">
-          <mat-icon>arrow_back</mat-icon>
-          Change topic
-        </button>
-      </div>
 
-      <div class="question-preview">
-        <div>
-          <p class="label">Question</p>
-          <p class="value">{{ flatQuestions[currentIndex].question }}</p>
+        <div class="question-panel" *ngIf="currentQuestion">
+          <div class="progress">
+            <div class="progress-info">
+              <span class="progress-step">
+                Question {{ currentIndex + 1 }} / {{ evaluationNodes.length }}
+              </span>
+              <span class="progress-topic">{{ selectedTopic?.name }}</span>
+              <span class="progress-answered">
+                {{ answeredCount }} answered
+              </span>
+            </div>
+            <button mat-stroked-button color="accent" (click)="backToPicker()">
+              <mat-icon>arrow_back</mat-icon>
+              Change topic
+            </button>
+          </div>
+
+          <div class="question-preview">
+            <div>
+              <p class="label">Question</p>
+              <p class="value">{{ currentQuestion.question }}</p>
+            </div>
+            <div>
+              <p class="label">Suggested answer</p>
+              <p class="value">{{ currentQuestion.answer }}</p>
+            </div>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width value-field">
+            <mat-label>Score (0 - {{ maxQuestionValue }})</mat-label>
+            <input
+              matInput
+              type="number"
+              [formControl]="currentValueCtrl"
+              placeholder="Enter value"
+            />
+
+            @if (currentValueCtrl.hasError('required')) {
+              <mat-error>
+                Value is required.
+              </mat-error>
+            }
+
+            @if (currentValueCtrl.hasError('min')) {
+              <mat-error>
+                Value must be 0 or greater.
+              </mat-error>
+            }
+
+            @if (currentValueCtrl.hasError('max')) {
+              <mat-error>
+                Value must be {{ maxQuestionValue }} or less.
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <div class="dialog-actions">
+            <button mat-stroked-button color="primary" (click)="finishInterview()">Finish</button>
+            <span class="spacer"></span>
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="goNext()"
+              [disabled]="currentValueCtrl.invalid"
+            >
+              {{ currentIndex < evaluationNodes.length - 1 ? 'Next question' : 'Finish & review' }}
+            </button>
+          </div>
         </div>
-        <div>
-          <p class="label">Suggested answer</p>
-          <p class="value">{{ flatQuestions[currentIndex].answer }}</p>
-        </div>
-      </div>
-
-      <mat-form-field appearance="outline" class="full-width value-field">
-        <mat-label>Score (0 - {{ maxQuestionValue }})</mat-label>
-        <input
-          matInput
-          type="number"
-          [formControl]="currentValueCtrl"
-          placeholder="Enter value"
-        />
-
-        @if (currentValueCtrl.hasError('required')) {
-          <mat-error>
-            Value is required.
-          </mat-error>
-        }
-
-        @if (currentValueCtrl.hasError('min')) {
-          <mat-error>
-            Value must be 0 or greater.
-          </mat-error>
-        }
-
-        @if (currentValueCtrl.hasError('max')) {
-          <mat-error>
-            Value must be {{ maxQuestionValue }} or less.
-          </mat-error>
-        }
-      </mat-form-field>
-
-      <div class="dialog-actions">
-        <button
-          mat-flat-button
-          color="primary"
-          (click)="goNext()"
-          [disabled]="currentValueCtrl.invalid"
-        >
-          {{ currentIndex + 1 < flatQuestions.length ? 'Next question' : 'Finish review' }}
-        </button>
       </div>
     </ng-container>
 
     <ng-template #summary>
       <div class="summary-card">
         <div class="emoji">🎉</div>
-        <h3>Topic complete</h3>
+        <h3>Topic review</h3>
         <p>Total Score</p>
         <div class="score">{{ calculateScore() }}%</div>
         <button mat-flat-button color="accent" (click)="backToPicker()">Evaluate another</button>

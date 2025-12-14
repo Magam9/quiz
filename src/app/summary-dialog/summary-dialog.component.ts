@@ -9,6 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { IQuestion, ITopic } from '../core/models';
 
+interface EvaluationNode {
+  question: IQuestion;
+  depth: number;
+  parentId: string | null;
+}
+
 @Component({
   selector: 'app-summary-dialog',
   standalone: true,
@@ -26,8 +32,9 @@ import { IQuestion, ITopic } from '../core/models';
 })
 export class SummaryDialogComponent {
   selectedTopic: ITopic | null = null;
-  flatQuestions: IQuestion[] = [];
+  evaluationNodes: EvaluationNode[] = [];
   currentIndex = 0;
+  showSummary = false;
   readonly maxQuestionValue = 100;
 
   currentValueCtrl = new FormControl<number | null>(null, [
@@ -50,54 +57,80 @@ export class SummaryDialogComponent {
       return;
     }
     this.selectedTopic = topic;
-    this.flatQuestions = this.flattenQuestions(topic.questions);
+    this.evaluationNodes = this.flattenQuestions(topic.questions);
     this.currentIndex = 0;
-    this.currentValueCtrl.setValue(this.flatQuestions[0]?.currentValue ?? null);
+    this.showSummary = false;
     this.setValidatorsForCurrentQuestion();
   }
 
   backToPicker() {
     this.selectedTopic = null;
-    this.flatQuestions = [];
+    this.evaluationNodes = [];
     this.currentIndex = 0;
+    this.showSummary = false;
     this.currentValueCtrl.reset();
   }
 
-  flattenQuestions(questions: IQuestion[]): IQuestion[] {
-    const result: IQuestion[] = [];
-    const walk = (questions: IQuestion[]) => {
-      for (const question of questions) {
-        question.currentValue = null;
-        result.push(question);
-        if (question.subQuestions?.length) {
-          walk(question.subQuestions);
-        }
+  flattenQuestions(
+    questions: IQuestion[],
+    depth = 0,
+    parentId: string | null = null
+  ): EvaluationNode[] {
+    const result: EvaluationNode[] = [];
+
+    for (const question of questions) {
+      question.currentValue = null;
+      result.push({ question, depth, parentId });
+
+      if (question.subQuestions?.length) {
+        result.push(
+          ...this.flattenQuestions(question.subQuestions, depth + 1, question.id)
+        );
       }
-    };
-    walk(questions);
+    }
+
     return result;
   }
 
+  get currentQuestion(): IQuestion | null {
+    return this.evaluationNodes[this.currentIndex]?.question ?? null;
+  }
+
+  get answeredCount(): number {
+    return this.evaluationNodes.filter(
+      (node) => node.question.currentValue !== null
+    ).length;
+  }
+
+  selectQuestionNode(node: EvaluationNode) {
+    const targetIndex = this.evaluationNodes.findIndex(
+      (item) => item.question.id === node.question.id
+    );
+    if (targetIndex === -1) return;
+
+    this.persistCurrentValue();
+    this.currentIndex = targetIndex;
+    this.showSummary = false;
+    this.setValidatorsForCurrentQuestion();
+  }
+
   goNext() {
-    const current = this.flatQuestions[this.currentIndex];
+    const current = this.currentQuestion;
     if (this.currentValueCtrl.invalid || !current) {
       return;
     }
 
     current.currentValue = this.currentValueCtrl.value ?? 0;
-    this.currentIndex++;
-
-    if (this.currentIndex < this.flatQuestions.length) {
-      this.currentValueCtrl.reset();
-      this.currentValueCtrl.setValue(
-        this.flatQuestions[this.currentIndex]?.currentValue ?? null
-      );
+    if (this.currentIndex < this.evaluationNodes.length - 1) {
+      this.currentIndex++;
+      this.setValidatorsForCurrentQuestion();
+    } else {
+      this.finishInterview();
     }
-    this.setValidatorsForCurrentQuestion();
   }
 
   setValidatorsForCurrentQuestion() {
-    const current = this.flatQuestions[this.currentIndex];
+    const current = this.currentQuestion;
     if (!current) {
       return;
     }
@@ -114,16 +147,32 @@ export class SummaryDialogComponent {
     this.currentValueCtrl.setValue(current.currentValue ?? null);
   }
 
+  persistCurrentValue() {
+    const current = this.currentQuestion;
+    if (!current) {
+      return;
+    }
+
+    if (this.currentValueCtrl.valid && this.currentValueCtrl.value !== null) {
+      current.currentValue = this.currentValueCtrl.value;
+    }
+  }
+
+  finishInterview() {
+    this.persistCurrentValue();
+    this.showSummary = true;
+  }
+
   calculateScore(): number {
-    if (!this.flatQuestions.length) {
+    if (!this.evaluationNodes.length) {
       return 0;
     }
 
-    const totalAchieved = this.flatQuestions.reduce(
-      (acc, question) => acc + (question.currentValue ?? 0),
+    const totalAchieved = this.evaluationNodes.reduce(
+      (acc, node) => acc + (node.question.currentValue ?? 0),
       0
     );
-    const totalPossible = this.flatQuestions.length * this.maxQuestionValue;
+    const totalPossible = this.evaluationNodes.length * this.maxQuestionValue;
     const percent = (totalAchieved / totalPossible) * 100;
 
     return Math.round(percent);

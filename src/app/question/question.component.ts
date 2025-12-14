@@ -10,7 +10,6 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 import { generateRandomId } from '../helpers';
 import { IQuestion } from '../core/models';
 
-
 @Component({
   selector: 'app-question',
   standalone: true,

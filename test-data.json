@@ -1,0 +1,185 @@
+[
+  {
+    "id": "topic_nodejs",
+    "name": "Node.js",
+    "questions": [
+      {
+        "id": "question_node_eventloop",
+        "question": "Поясни, як працює event loop у Node.js.",
+        "answer": "Event loop обробляє чергу callback-функцій у кількох фазах, забезпечуючи неблокуюче виконання I/O.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_node_eventloop_phases",
+            "question": "Які основні фази event loop ти знаєш?",
+            "answer": "Timers, Pending Callbacks, Idle/Prepare, Poll, Check, Close Callbacks та мікрозадачі між фазами.",
+            "currentValue": 0,
+            "subQuestions": []
+          },
+          {
+            "id": "subq_node_microtasks",
+            "question": "Як Node.js обробляє microtasks (Promises, queueMicrotask)?",
+            "answer": "Мікрозадачі виконуються після поточного обробника перед переходом до наступної фази event loop.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_node_streams",
+        "question": "Що таке Streams у Node.js і навіщо вони потрібні?",
+        "answer": "Streams дозволяють обробляти дані по частинах (chunk), зменшуючи затримки та споживання пам'яті.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_node_stream_types",
+            "question": "Назви основні типи streams.",
+            "answer": "Readable, Writable, Duplex і Transform.",
+            "currentValue": 0,
+            "subQuestions": []
+          },
+          {
+            "id": "subq_node_backpressure",
+            "question": "Як Node.js розв'язує проблему backpressure у streams?",
+            "answer": "Через механізм паузи/відновлення потоку та сигнали ready/readable, що узгоджують швидкість читання й запису.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_node_modules",
+        "question": "Чим відрізняються CommonJS та ECMAScript Modules у Node.js?",
+        "answer": "CommonJS синхронний та використовує require/module.exports, тоді як ESM асинхронний із import/export та підтримує tree-shaking.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_node_module_resolution",
+            "question": "Як Node.js визначає, яку систему модулів використовувати?",
+            "answer": "Через поле \"type\" у package.json або розширення файлу (.cjs/.mjs).",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_node_worker_threads",
+        "question": "Коли варто застосовувати Worker Threads у Node.js?",
+        "answer": "Для CPU-інтенсивних задач, щоб не блокувати основний event loop.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_node_worker_communication",
+            "question": "Які способи комунікації між worker threads?",
+            "answer": "Через message passing (postMessage), shared memory (SharedArrayBuffer) та Atomics.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_node_security",
+        "question": "Назви кілька поширених підходів до безпеки Node.js застосунків.",
+        "answer": "Використання helmet/csurf, валідація вводу, захист від SQL/NoSQL ін'єкцій, обмеження rate-limits, оновлення залежностей.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_node_env",
+            "question": "Як правильно працювати з конфіденційними змінними середовища?",
+            "answer": "Зберігати їх у .env або секретах CI/CD, не додавати у репозиторій та використовувати process.env.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "topic_databases",
+    "name": "Databases",
+    "questions": [
+      {
+        "id": "question_db_indexing",
+        "question": "Для чого використовуються індекси в реляційних БД?",
+        "answer": "Індекси створюють додаткову структуру пошуку, що прискорює SELECT за рахунок додаткових витрат на вставку/оновлення.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_db_index_tradeoffs",
+            "question": "Які недоліки має надмірне використання індексів?",
+            "answer": "Більша витрата пам'яті, повільніші DML-операції та необхідність підтримувати їх актуальними.",
+            "currentValue": 0,
+            "subQuestions": []
+          },
+          {
+            "id": "subq_db_covering_index",
+            "question": "Що таке covering index?",
+            "answer": "Індекс, який містить усе потрібне для запиту, тому вибірка не звертається до таблиці.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_db_transaction",
+        "question": "Поясни властивості ACID.",
+        "answer": "Atomicity, Consistency, Isolation, Durability — гарантії коректності транзакцій у СУБД.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_db_isolation_levels",
+            "question": "Які рівні ізоляції транзакцій ти знаєш?",
+            "answer": "Read Uncommitted, Read Committed, Repeatable Read, Serializable.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_db_replication",
+        "question": "Опиши різницю між master-slave та master-master реплікацією.",
+        "answer": "Master-slave: запис лише на master, читання на slave. Master-master: запис на кількох вузлах із синхронізацією конфліктів.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_db_consistency",
+            "question": "Як реплікація впливає на узгодженість даних?",
+            "answer": "Залежить від режиму: синхронна дає сильну узгодженість, асинхронна — eventual consistency з можливими затримками.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_db_sharding",
+        "question": "Що таке шардінг і коли його застосовують?",
+        "answer": "Розподіл даних по кількох вузлах для масштабування по горизонталі, зменшення навантаження й збільшення об'єму.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_db_shard_key",
+            "question": "Як обрати добрий shard key?",
+            "answer": "Ключ повинен рівномірно розподіляти навантаження й запити; уникати виділення гарячих shard'ів.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      },
+      {
+        "id": "question_db_nosql",
+        "question": "Які типи NoSQL БД існують і коли їх обирають замість реляційних?",
+        "answer": "Документні, key-value, column-family, графові — використовують для гнучких схем, високої пропускної здатності або зв'язків.",
+        "currentValue": 0,
+        "subQuestions": [
+          {
+            "id": "subq_db_cap",
+            "question": "Поясни CAP-теорему в контексті NoSQL.",
+            "answer": "У розподіленій системі одночасно можна гарантувати лише дві з трьох властивостей: Consistency, Availability, Partition tolerance.",
+            "currentValue": 0,
+            "subQuestions": []
+          }
+        ]
+      }
+    ]
+  }
+]
